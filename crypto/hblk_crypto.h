@@ -6,6 +6,7 @@
 #include <openssl/sha.h>
 #include <openssl/ec.h>
 #include <openssl/objects.h>
+#include <openssl/bn.h>
 #include <stdint.h>
 
 #define EC_CURVE   NID_secp256k1
@@ -38,6 +39,8 @@ typedef struct sig_s
 uint8_t *sha256(int8_t const *, size_t, uint8_t digest[SHA256_DIGEST_LENGTH]);
 
 EC_KEY *ec_create(void);
+
+uint8_t *ec_to_pub(EC_KEY const *key, uint8_t pub[EC_PUB_LEN]);
 
 
 
