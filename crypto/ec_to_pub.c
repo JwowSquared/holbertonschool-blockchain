@@ -9,11 +9,9 @@
 */
 uint8_t *ec_to_pub(EC_KEY const *key, uint8_t pub[EC_PUB_LEN])
 {
-	size_t i = 0;
 	const EC_POINT *p;
 	const EC_GROUP *group;
 	BN_CTX *ctx;
-	char *out;
 
 	if (key == NULL)
 		return (NULL);
@@ -22,17 +20,11 @@ uint8_t *ec_to_pub(EC_KEY const *key, uint8_t pub[EC_PUB_LEN])
 	group = EC_KEY_get0_group(key);
 	ctx = BN_CTX_new();
 
-	out = EC_POINT_point2hex(group, p,
-		POINT_CONVERSION_UNCOMPRESSED, ctx);
-
-	while (i < EC_PUB_LEN)
-	{
-		pub[i] = (unsigned char)out[i];
-		i++;
-	}
+	EC_POINT_point2oct(group, p,
+		POINT_CONVERSION_UNCOMPRESSED,
+		pub, EC_PUB_LEN, ctx);
 
 	BN_CTX_free(ctx);
-	free(out);
 
 	return (pub);
 }
