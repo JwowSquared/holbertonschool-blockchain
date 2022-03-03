@@ -8,7 +8,23 @@
 */
 EC_KEY *ec_from_pub(uint8_t const pub[EC_PUB_LEN])
 {
-	(void)pub;
+	EC_KEY *out = NULL;
+	EC_POINT *key = NULL;
+	const EC_GROUP *group = NULL;
+	BN_CTX *ctx;
 
-	return (NULL);
+	ctx = BN_CTX_new();
+
+	out = EC_KEY_new_by_curve_name(EC_CURVE);
+	group = EC_KEY_get0_group(out);
+	key = EC_POINT_new(group);
+
+	EC_POINT_oct2point(group, key, pub, EC_PUB_LEN, NULL);
+
+	EC_KEY_set_public_key(out, key);
+
+	EC_POINT_free(key);
+	BN_CTX_free(ctx);
+
+	return (out);
 }
