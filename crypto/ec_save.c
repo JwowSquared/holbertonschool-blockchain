@@ -20,12 +20,12 @@ int ec_save(EC_KEY *key, char const *folder)
 
 	sprintf(path, "%s%s", folder, "/key.pem");
 	fp = fopen(path, "w");
-	PEM_write_EC_PUBKEY(fp, key);
+	PEM_write_ECPrivateKey(fp, key, NULL, NULL, 0, NULL, NULL);
 	fclose(fp);
 
 	sprintf(path, "%s%s", folder, "/key_pub.pem");
 	fp = fopen(path, "w");
-	PEM_write_ECPrivateKey(fp, key, NULL, NULL, 0, NULL, NULL);
+	PEM_write_EC_PUBKEY(fp, key);
 	fclose(fp);
 
 	free(path);
