@@ -25,7 +25,7 @@ int ec_save(EC_KEY *key, char const *folder)
 	BIO_write_filename(bio, path);
 
 	pkey = EVP_PKEY_new();
-	EVP_PKEY_assign_EC_KEY(pkey,key);
+	EVP_PKEY_assign_EC_KEY(pkey, key);
 
 	PEM_write_bio_PrivateKey(bio, pkey, NULL, NULL, 0, 0, NULL);
 
