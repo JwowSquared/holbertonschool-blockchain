@@ -13,7 +13,7 @@ EC_KEY *ec_create(void)
 	out = EC_KEY_new_by_curve_name(EC_CURVE);
 
 	/* Flag needs to be initialized. This works. */
-	EC_KEY_set_asn1_flag(out, OPENSSL_EC_NAMED_CURVE);
+	/* EC_KEY_set_asn1_flag(out, OPENSSL_EC_NAMED_CURVE); */
 
 	/* Generates keys */
 	EC_KEY_generate_key(out);

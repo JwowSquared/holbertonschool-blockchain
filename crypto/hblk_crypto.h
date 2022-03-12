@@ -1,13 +1,16 @@
 #ifndef _HBLK_CRYPTO_H_
 #define _HBLK_CRYPTO_H_
 
-
-
 #include <openssl/sha.h>
 #include <openssl/ec.h>
 #include <openssl/objects.h>
 #include <openssl/bn.h>
+#include <openssl/bio.h>
+#include <openssl/pem.h>
 #include <stdint.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <string.h>
 
 #define EC_CURVE   NID_secp256k1
 
