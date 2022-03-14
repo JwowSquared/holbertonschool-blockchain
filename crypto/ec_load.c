@@ -16,15 +16,16 @@ EC_KEY *ec_load(char const *folder)
 
 	path = malloc(sizeof(char) * (strlen(folder) + 13));
 
+	sprintf(path, "%s%s", folder, "/key_pub.pem");
+	fp = fopen(path, "r");
+	PEM_read_EC_PUBKEY(fp, &out, NULL, NULL);
+	fclose(fp);
+
 	sprintf(path, "%s%s", folder, "/key.pem");
 	fp = fopen(path, "r");
 	PEM_read_ECPrivateKey(fp, &out, NULL, NULL);
 	fclose(fp);
 
-	sprintf(path, "%s%s", folder, "/key_pub.pem");
-	fp = fopen(path, "r");
-	PEM_read_EC_PUBKEY(fp, &out, NULL, NULL);
-	fclose(fp);
 
 	free(path);
 
