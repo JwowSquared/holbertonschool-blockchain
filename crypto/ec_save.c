@@ -18,12 +18,12 @@ int ec_save(EC_KEY *key, char const *folder)
 
 	path = malloc(sizeof(char) * (strlen(folder) + 13));
 
-	sprintf(path, "%s%s", folder, "/key_pub.pem");
+	sprintf(path, "%s%s%s", folder, "/", PUB_FILENAME);
 	fp = fopen(path, "w");
 	PEM_write_EC_PUBKEY(fp, key);
 	fclose(fp);
 
-	sprintf(path, "%s%s", folder, "/key.pem");
+	sprintf(path, "%s%s%s", folder, "/", PRI_FILENAME);
 	fp = fopen(path, "w");
 	PEM_write_ECPrivateKey(fp, key, NULL, NULL, 0, NULL, NULL);
 	fclose(fp);

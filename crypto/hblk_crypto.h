@@ -4,8 +4,6 @@
 #include <openssl/sha.h>
 #include <openssl/ec.h>
 #include <openssl/objects.h>
-#include <openssl/bn.h>
-#include <openssl/bio.h>
 #include <openssl/pem.h>
 #include <stdint.h>
 #include <sys/types.h>
@@ -43,12 +41,14 @@ uint8_t *sha256(int8_t const *, size_t, uint8_t digest[SHA256_DIGEST_LENGTH]);
 
 EC_KEY *ec_create(void);
 
-uint8_t *ec_to_pub(EC_KEY const *key, uint8_t pub[EC_PUB_LEN]);
+uint8_t *ec_to_pub(EC_KEY const *, uint8_t pub[EC_PUB_LEN]);
 
 EC_KEY *ec_from_pub(uint8_t const pub[EC_PUB_LEN]);
 
-int ec_save(EC_KEY *key, char const *folder);
+int ec_save(EC_KEY *key, char const *);
 
-EC_KEY *ec_load(char const *folder);
+EC_KEY *ec_load(char const *);
+
+uint8_t *ec_sign(EC_KEY const *, uint8_t const *, size_t, sig_t *);
 
 #endif /* _HBLK_CRYPTO_H_ */
