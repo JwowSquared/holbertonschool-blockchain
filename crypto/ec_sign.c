@@ -12,16 +12,11 @@
 uint8_t *ec_sign(EC_KEY const *key, uint8_t const *msg,
 	size_t msglen, sig_t *sig)
 {
-	unsigned int ui;
-
 	if (key == NULL || msg == NULL)
 		return (NULL);
 
-	ui = 70;
-
-	sig->len = 70;
-
-	ECDSA_sign(0, msg, msglen, sig->sig, &ui, (EC_KEY *)key);
+	ECDSA_sign(0, msg, msglen, sig->sig,
+		(unsigned int *)&sig->len, (EC_KEY *)key);
 
 	return (sig->sig);
 }
