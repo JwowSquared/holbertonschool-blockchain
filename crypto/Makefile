@@ -1,28 +1,67 @@
-all: task0 task1 task2 task3 task4 task5 task6 task7
+compiler = gcc -Wall -Wextra -Werror -pedantic -I.
+flags = -lssl -lcrypto
 
-task0: sha256.c provided/_print_hex_buffer.c test/sha256-main.c
-	gcc -Wall -Wextra -Werror -pedantic -I. -o task0 test/sha256-main.c provided/_print_hex_buffer.c sha256.c -lssl -lcrypto
+lib-files = \
+sha256.o \
+ec_create.o \
+ec_to_pub.o \
+ec_from_pub.o \
+ec_save.o \
+ec_load.o \
+ec_sign.o \
+ec_verify.o
 
-task1: ec_create.c test/ec_create-main.c
-	gcc -Wall -Wextra -Werror -pedantic -I. -o task1 test/ec_create-main.c ec_create.c -lssl -lcrypto
+libhblk_crypto.a: $(lib-files)
+	ar rcs libhblk_crypto.a $(lib-files)
 
-task2: ec_to_pub.c ec_create.c provided/_print_hex_buffer.c test/ec_to_pub-main.c
-	gcc -Wall -Wextra -Werror -pedantic -I. -o task2 test/ec_to_pub-main.c provided/_print_hex_buffer.c ec_to_pub.c ec_create.c -lssl -lcrypto
+sha256.o: sha256.c
+	$(compiler) -c sha256.c $(flags)
+ec_create.o: ec_create.c
+	$(compiler) -c ec_create.c $(flags)
+ec_to_pub.o: ec_to_pub.c
+	$(compiler) -c ec_to_pub.c $(flags)
+ec_from_pub.o: ec_from_pub.c
+	$(compiler) -c ec_from_pub.c $(flags)
+ec_save.o: ec_save.c
+	$(compiler) -c ec_save.c $(flags)
+ec_load.o: ec_load.c
+	$(compiler) -c ec_load.c $(flags)
+ec_sign.o: ec_sign.c
+	$(compiler) -c ec_sign.c $(flags)
+ec_verify.o: ec_verify.c
+	$(compiler) -c ec_verify.c $(flags)
 
-task3: ec_from_pub.c ec_to_pub.c ec_create.c provided/_print_hex_buffer.c test/ec_from_pub-main.c
-	gcc -Wall -Wextra -Werror -pedantic -I. -o task3 test/ec_from_pub-main.c provided/_print_hex_buffer.c ec_from_pub.c ec_to_pub.c ec_create.c -lssl -lcrypto
+files-0 = sha256.c provided/_print_hex_buffer.c test/sha256-main.c
+task0: $(files-0)
+	$(compiler) -o task0 $(files-0) $(flags)
 
-task4: ec_save.c ec_create.c ec_to_pub.c provided/_print_hex_buffer.c test/ec_save-main.c
-	gcc -Wall -Wextra -Werror -pedantic -I. -o task4 test/ec_save-main.c ec_save.c ec_create.c ec_to_pub.c provided/_print_hex_buffer.c -lssl -lcrypto
+files-1 = ec_create.c test/ec_create-main.c
+task1: $(files-1)
+	$(compiler) -o task1 $(files-1) $(flags)
 
-task5: ec_load.c ec_save.c ec_create.c ec_to_pub.c provided/_print_hex_buffer.c test/ec_load-main.c
-	gcc -Wall -Wextra -Werror -pedantic -I. -o task5 test/ec_load-main.c ec_load.c ec_save.c ec_create.c ec_to_pub.c provided/_print_hex_buffer.c -lssl -lcrypto
+files-2 = ec_to_pub.c ec_create.c provided/_print_hex_buffer.c test/ec_to_pub-main.c
+task2: $(files-2)
+	$(compiler) -o task2 $(files-2) $(flags)
 
-task6: ec_sign.c ec_create.c provided/_print_hex_buffer.c test/ec_sign-main.c
-	gcc -Wall -Wextra -Werror -pedantic -I. -o task6 test/ec_sign-main.c provided/_print_hex_buffer.c ec_sign.c ec_create.c -lssl -lcrypto
+files-3 = ec_from_pub.c ec_to_pub.c ec_create.c provided/_print_hex_buffer.c test/ec_from_pub-main.c
+task3: $(files-3)
+	$(compiler) -o task3 $(files-0) $(flags)
 
-task7: ec_verify.c ec_sign.c ec_create.c provided/_print_hex_buffer.c test/ec_verify-main.c
-	gcc -Wall -Wextra -Werror -pedantic -I. -o task7 test/ec_verify-main.c provided/_print_hex_buffer.c ec_verify.c ec_sign.c ec_create.c -lssl -lcrypto
+files-4 = ec_save.c ec_create.c ec_to_pub.c provided/_print_hex_buffer.c test/ec_save-main.c
+task4: $(files-4)
+	$(compiler) -o task4 $(files-4) $(flags)
+
+files-5 = ec_load.c ec_save.c ec_create.c ec_to_pub.c provided/_print_hex_buffer.c test/ec_load-main.c
+task5: $(files-5)
+	$(compiler) -o task5 $(files-5) $(flags)
+
+files-6 = ec_sign.c ec_create.c provided/_print_hex_buffer.c test/ec_sign-main.c
+task6: $(files-6)
+	$(compiler) -o task6 $(files-6) $(flags)
+
+files-7 = ec_verify.c ec_sign.c ec_create.c provided/_print_hex_buffer.c test/ec_verify-main.c
+task7: $(files-7)
+	$(compiler) -o task7 $(files-7) $(flags)
 
 clean:
-	rm task0 task1 task2 task3 task4 task5 task6 task7
+	rm task0 task1 task2 task3 task4 task5 task6 task7 $(lib-files) libhblk_crypto.a
