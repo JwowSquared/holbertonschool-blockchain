@@ -1,4 +1,4 @@
-all: task0 task1 task2 task3 task4 task5 task6
+all: task0 task1 task2 task3 task4 task5 task6 task7
 
 task0: sha256.c provided/_print_hex_buffer.c test/sha256-main.c
 	gcc -Wall -Wextra -Werror -pedantic -I. -o task0 test/sha256-main.c provided/_print_hex_buffer.c sha256.c -lssl -lcrypto
@@ -21,5 +21,8 @@ task5: ec_load.c ec_save.c ec_create.c ec_to_pub.c provided/_print_hex_buffer.c 
 task6: ec_sign.c ec_create.c provided/_print_hex_buffer.c test/ec_sign-main.c
 	gcc -Wall -Wextra -Werror -pedantic -I. -o task6 test/ec_sign-main.c provided/_print_hex_buffer.c ec_sign.c ec_create.c -lssl -lcrypto
 
+task7: ec_verify.c ec_sign.c ec_create.c provided/_print_hex_buffer.c test/ec_verify-main.c
+	gcc -Wall -Wextra -Werror -pedantic -I. -o task7 test/ec_verify-main.c provided/_print_hex_buffer.c ec_verify.c ec_sign.c ec_create.c -lssl -lcrypto
+
 clean:
-	rm task0 task1 task2 task3 task4 task5 task6
+	rm task0 task1 task2 task3 task4 task5 task6 task7

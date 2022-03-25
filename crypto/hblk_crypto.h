@@ -51,4 +51,6 @@ EC_KEY *ec_load(char const *);
 
 uint8_t *ec_sign(EC_KEY const *, uint8_t const *, size_t, sig_t *);
 
+int ec_verify(EC_KEY const *, uint8_t const *, size_t, sig_t const *);
+
 #endif /* _HBLK_CRYPTO_H_ */
