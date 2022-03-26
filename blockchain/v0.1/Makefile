@@ -41,4 +41,5 @@ blockchain_destroy.c block_hash.c block_is_valid.c test/block_is_valid-main.c
 task7: $(files-7)
 	$(compiler) -o task7 $(files-7) $(flags)
 
-clean: rm task0 task1 task2 task3 task4 task5 task6 task7
+clean:
+	rm task0 task1 task2 task3 task4 task5 task6 task7
