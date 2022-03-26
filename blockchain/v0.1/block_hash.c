@@ -7,7 +7,10 @@
 *
 * Return: hash_buf
 */
-uint8_t *block_hash(block_t const *block, uint8_t hash_buf[SHA256_DIGEST_LENGTH])
+uint8_t *block_hash(block_t const *block,
+	uint8_t hash_buf[SHA256_DIGEST_LENGTH])
 {
-	return (sha256((int8_t const *)block, sizeof(block), hash_buf));
+	size_t hashable_size = sizeof(block->data) + sizeof(block->info);
+
+	return (sha256((int8_t const *)block, hashable_size, hash_buf));
 }
