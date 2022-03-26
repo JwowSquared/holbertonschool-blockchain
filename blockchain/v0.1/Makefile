@@ -21,8 +21,8 @@ block_destroy.c test/blockchain_destroy-main.c
 task3: $(files-3)
 	$(compiler) -o task3 $(files-3) $(flags)
 
-files-4 = blockchain_create.c block_create.c block_destroy.c \
-blockchain_destroy.c block_hash.c test/block_hash-main.c
+files-4 = blockchain_create.c block_create.c block_destroy.c blockchain_destroy.c \
+block_hash.c test/block_hash-main.c provided/_blockchain_print.c provided/_blockchain_destroy.c
 task4: $(files-4)
 	$(compiler) -o task4 $(files-4) $(flags)
 
