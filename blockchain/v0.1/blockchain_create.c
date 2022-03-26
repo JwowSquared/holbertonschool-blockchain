@@ -1,5 +1,7 @@
 #include "blockchain.h"
+#ifndef _genesis
 #include "provided/_genesis.c"
+#endif
 
 /**
 * blockchain_create - creates a blockchain using the given genesis block
