@@ -47,7 +47,7 @@ blockchain_t *blockchain_deserialize(char const *path)
 		fread(&block->data.len, 4, 1, file);
 		if (header.endian == 2)
 			swap_block(block);
-		memset(out->data.buffer, 0, sizeof(out->data.buffer));
+		memset(block->data.buffer, 0, sizeof(block->data.buffer));
 		fread(&block->data.buffer, block->data.len, 1, file);
 		fread(&block->hash, 32, 1, file);
 
