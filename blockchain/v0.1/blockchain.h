@@ -5,6 +5,7 @@
 #include <stdint.h>
 #include <llist.h>
 #include "../../crypto/hblk_crypto.h"
+#include "provided/endianness.h"
 
 #define BLOCKCHAIN_DATA_MAX 1024
 

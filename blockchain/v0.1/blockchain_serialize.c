@@ -28,6 +28,7 @@ int blockchain_serialize(blockchain_t const *blockchain, char const *path)
 	{
 		block = llist_get_node_at(blockchain->chain, i);
 		fwrite(block, 1, 56, file);
+		fwrite(&block->data.len, 1, 4, file);
 		fwrite(&block->data.buffer, 1, block->data.len, file);
 		fwrite(&block->hash, 1, 32, file);
 		i++;
