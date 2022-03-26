@@ -21,6 +21,7 @@ block_t *block_create(block_t const *prev,
 	if (copy > data_len)
 		copy = data_len;
 
+	memset(out->data.buffer, 0, sizeof(out->data.buffer));
 	memcpy(out->data.buffer, data, copy);
 	out->data.len = copy;
 
