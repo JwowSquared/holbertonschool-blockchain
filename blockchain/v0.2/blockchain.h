@@ -8,6 +8,8 @@
 #include "provided/endianness.h"
 
 #define BLOCKCHAIN_DATA_MAX 1024
+#define BLOCK_GENERATION_INTERVAL 1
+#define DIFFICULTY_ADJUSTMENT_INTERVAL 5
 
 /**
  * struct blockchain_s - Blockchain structure
@@ -113,5 +115,7 @@ int block_is_valid(block_t const *, block_t const *);
 int hash_matches_difficulty(uint8_t const hash[SHA256_DIGEST_LENGTH], uint32_t difficulty);
 
 void block_mine(block_t *block);
+
+uint32_t blockchain_difficulty(blockchain_t const *blockchain);
 
 #endif /* _BLOCKCHAIN_H_ */
