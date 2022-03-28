@@ -9,16 +9,15 @@
 uint32_t blockchain_difficulty(blockchain_t const *blockchain)
 {
 	block_t *prev, *current;
-	int size, prev_idx;
+	int prev_idx;
 	uint64_t time, adjustment_time;
 
 
 	current = llist_get_tail(blockchain->chain);
-	if (current->info.index == 0)
+	if (current->info.index < DIFFICULTY_ADJUSTMENT_INTERVAL)
 		return (current->info.difficulty);
 
-	size = llist_size(blockchain->chain);
-	if (size % DIFFICULTY_ADJUSTMENT_INTERVAL > 0)
+	if (current->info.index % DIFFICULTY_ADJUSTMENT_INTERVAL > 0)
 		return (current->info.difficulty);
 
 	prev_idx = current->info.index - DIFFICULTY_ADJUSTMENT_INTERVAL + 1;
