@@ -5,8 +5,8 @@ files-0 = hash_matches_difficulty.c test/hash_matches_difficulty-main.c
 task0: $(files-0)
 	$(compiler) -o task0 $(files-0) $(flags)
 
-files-1 = blockchain_create.c block_create.c block_destroy.c \
-blockchain_destroy.c block_hash.c block_is_valid.c test/block_is_valid-main.c
+files-1 = blockchain_create.c block_create.c block_destroy.c blockchain_destroy.c \
+block_hash.c block_is_valid.c hash_matches_difficulty.c test/block_is_valid-main.c
 task1: $(files-1)
 	$(compiler) -o task1 $(files-1) $(flags)
 
