@@ -26,7 +26,7 @@ uint32_t blockchain_difficulty(blockchain_t const *blockchain)
 	time = current->info.timestamp - prev->info.timestamp;
 
 	adjustment_time = BLOCK_GENERATION_INTERVAL * DIFFICULTY_ADJUSTMENT_INTERVAL;
-	if (time < adjustment_time / 2)
+	if (time <= adjustment_time / 2)
 		return (current->info.difficulty + 1);
 
 	if (time > adjustment_time * 2 && current->info.difficulty > 0)
