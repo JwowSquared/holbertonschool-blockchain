@@ -4,7 +4,7 @@
 * unspent_tx_out_create - creates an unspent out transaction
 * @block_hash: hash of block with transaction in it
 * @tx_id: hash of transaction within block
-* @out: referenced out transaction
+* @t_out: referenced out transaction
 *
 * Return: pointer to new unspent_tx_out struct, else NULL
 */
