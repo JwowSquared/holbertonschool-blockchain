@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <llist.h>
-#include "../../crypto/hblk_crypto.h"
+#include "../../../crypto/hblk_crypto.h"
 
 # define COINBASE_AMOUNT 50
 
