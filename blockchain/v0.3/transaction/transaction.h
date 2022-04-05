@@ -87,6 +87,8 @@ tx_out_t const *out);
 
 tx_in_t *tx_in_create(unspent_tx_out_t const *unspent);
 
+uint8_t *transaction_hash(transaction_t const *transaction, uint8_t hash_buf[SHA256_DIGEST_LENGTH]);
+
 
 
 #endif /* _TRANSACTION_H_ */
