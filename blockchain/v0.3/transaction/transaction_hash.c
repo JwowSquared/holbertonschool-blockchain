@@ -13,6 +13,8 @@ uint8_t *transaction_hash(
 {
 	int8_t *hash_target;
 	int in_len, out_len, target_len, offset, i;
+	tx_out_t *temp_out;
+	tx_in_t *temp_in;
 
 	in_len = llist_size(transaction->inputs);
 	out_len = llist_size(transaction->outputs);
@@ -25,13 +27,15 @@ uint8_t *transaction_hash(
 	offset = 0;
 	for (i = 0; i < in_len; i++)
 	{
-		memcpy(hash_target + offset, llist_get_node_at(transaction->inputs, i), 96);
+		temp_in = llist_get_node_at(transaction->inputs, i);
+		memcpy(hash_target + offset, temp_in, 96);
 		offset += 96;
 	}
 
 	for (i = 0; i < out_len; i++)
 	{
-		memcpy(hash_target + offset, llist_get_node_at(transaction->outputs, i), 32);
+		temp_out = llist_get_node_at(transaction->outputs, i);
+		memcpy(hash_target + offset, temp_out->hash, 32);
 		offset += 32;
 	}
 
