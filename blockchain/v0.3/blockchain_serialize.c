@@ -49,7 +49,7 @@ void header_setup(block_header_t *header)
 	header->magic[3] = 'K';
 	header->version[0] = '0';
 	header->version[1] = '.';
-	header->version[2] = '2';
+	header->version[2] = '3';
 	header->endian = 1;
 	header->blocks = 0;
 }
