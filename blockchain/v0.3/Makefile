@@ -1,26 +1,65 @@
-compiler = gcc -Wall -Wextra -Werror -pedantic -I.
+compiler = gcc -Wall -Wextra -Werror -pedantic -g3 -I. -Itransaction/ -Iprovided/ -I../../crypto
 flags = -L../../crypto -lhblk_crypto -lllist -lssl -lcrypto -pthread
 
-files-0 = hash_matches_difficulty.c test/hash_matches_difficulty-main.c
+files-0 = transaction/tx_out_create.c provided/_print_hex_buffer.c transaction/test/tx_out_create-main.c
 task0: $(files-0)
 	$(compiler) -o task0 $(files-0) $(flags)
 
-files-1 = blockchain_create.c block_create.c block_destroy.c blockchain_destroy.c \
-block_hash.c block_is_valid.c hash_matches_difficulty.c test/block_is_valid-main.c
+files-1 = transaction/tx_out_create.c transaction/unspent_tx_out_create.c provided/_print_hex_buffer.c transaction/test/unspent_tx_out_create-main.c
 task1: $(files-1)
 	$(compiler) -o task1 $(files-1) $(flags)
 
-files-2 = blockchain_create.c block_create.c block_destroy.c blockchain_destroy.c \
-block_hash.c block_is_valid.c hash_matches_difficulty.c block_mine.c \
-provided/_genesis.c provided/_blockchain_print.c test/block_mine-main.c
+files-2 = transaction/tx_out_create.c transaction/unspent_tx_out_create.c transaction/tx_in_create.c provided/_print_hex_buffer.c transaction/test/tx_in_create-main.c
 task2: $(files-2)
 	$(compiler) -o task2 $(files-2) $(flags)
 
-files-3 = blockchain_create.c block_create.c block_destroy.c blockchain_destroy.c \
-block_hash.c blockchain_difficulty.c provided/_genesis.c \
-provided/_blockchain_print.c test/blockchain_difficulty-main.c
+files-3 = transaction/tx_out_create.c transaction/unspent_tx_out_create.c transaction/tx_in_create.c transaction/transaction_hash.c provided/_print_hex_buffer.c transaction/test/transaction_hash-main.c provided/_transaction_print.c
 task3: $(files-3)
 	$(compiler) -o task3 $(files-3) $(flags)
 
+files-4 = transaction/tx_out_create.c transaction/unspent_tx_out_create.c transaction/tx_in_create.c transaction/transaction_hash.c transaction/tx_in_sign.c provided/_print_hex_buffer.c transaction/test/tx_in_sign-main.c provided/_transaction_print.c
+task4: $(files-4)
+	$(compiler) -o task4 $(files-4) $(flags)
+
+files-5 = transaction/tx_out_create.c transaction/unspent_tx_out_create.c transaction/tx_in_create.c transaction/transaction_hash.c transaction/tx_in_sign.c transaction/transaction_create.c provided/_print_hex_buffer.c provided/_transaction_print.c transaction/test/transaction_create-main.c
+task5: $(files-5)
+	$(compiler) -o task5 $(files-5) $(flags)
+
+files-6 = transaction/tx_out_create.c transaction/unspent_tx_out_create.c transaction/tx_in_create.c transaction/transaction_hash.c transaction/tx_in_sign.c transaction/transaction_is_valid.c provided/_print_hex_buffer.c transaction/test/transaction_is_valid-main.c provided/_transaction_print.c
+task6: $(files-6)
+	$(compiler) -o task6 $(files-6) $(flags)
+
+files-7 = transaction/tx_out_create.c transaction/transaction_hash.c transaction/coinbase_create.c provided/_print_hex_buffer.c transaction/test/coinbase_create-main.c provided/_transaction_print.c
+task7: $(files-7)
+	$(compiler) -o task7 $(files-7) $(flags)
+
+files-8 = transaction/tx_out_create.c transaction/transaction_hash.c transaction/coinbase_create.c transaction/coinbase_is_valid.c provided/_print_hex_buffer.c transaction/test/coinbase_is_valid-main.c provided/_transaction_print.c
+task8: $(files-8)
+	$(compiler) -o task8 $(files-8) $(flags)
+
+files-9 = transaction/tx_out_create.c transaction/tx_in_create.c transaction/transaction_hash.c transaction/tx_in_sign.c transaction/transaction_create.c transaction/coinbase_create.c transaction/transaction_destroy.c transaction/test/transaction_destroy-main.c
+task9: $(files-9)
+	$(compiler) -o task9 $(files-9) $(flags)
+
+files-11 = test/blockchain_destroy-main.c
+task11: $(files-11)
+	$(compiler) -o task11 $(files-11) $(flags)
+
+files-12 = blockchain_create.c block_create.c block_destroy.c blockchain_destroy.c block_hash.c transaction/tx_out_create.c transaction/tx_in_create.c transaction/transaction_hash.c transaction/coinbase_create.c transaction/transaction_destroy.c provided/_genesis.c provided/_print_hex_buffer.c provided/_blockchain_print.c provided/_transaction_print.c provided/_transaction_print_brief.c test/block_hash-main.c
+task12: $(files-12)
+	$(compiler) -o task12 $(files-12) $(flags)
+
+files-13 = blockchain_create.c block_create.c block_destroy.c blockchain_destroy.c block_hash.c block_is_valid.c hash_matches_difficulty.c blockchain_difficulty.c block_mine.c transaction/tx_out_create.c transaction/unspent_tx_out_create.c transaction/tx_in_create.c transaction/transaction_hash.c transaction/tx_in_sign.c transaction/transaction_create.c transaction/transaction_is_valid.c transaction/coinbase_create.c transaction/coinbase_is_valid.c transaction/transaction_destroy.c provided/_genesis.c provided/_print_hex_buffer.c test/block_is_valid-main.c
+task13: $(files-13)
+	$(compiler) -o task13 $(files-13) $(flags)
+
+files-14 = blockchain_create.c block_create.c block_destroy.c blockchain_destroy.c block_hash.c block_is_valid.c hash_matches_difficulty.c blockchain_difficulty.c block_mine.c transaction/tx_out_create.c transaction/unspent_tx_out_create.c transaction/tx_in_create.c transaction/transaction_hash.c transaction/tx_in_sign.c transaction/transaction_create.c transaction/transaction_is_valid.c transaction/coinbase_create.c transaction/coinbase_is_valid.c transaction/transaction_destroy.c transaction/update_unspent.c provided/_genesis.c provided/_print_hex_buffer.c provided/_blockchain_print.c provided/_transaction_print.c provided/_transaction_print_brief.c transaction/test/update_unspent-main.c
+task14: $(files-14)
+	$(compiler) -o task14 $(files-14) $(flags)
+
+files-15 = test/blockchain_deserialize-main.c
+task15: $(files-15)
+	$(compiler) -o task15 $(files-15) $(flags)
+
 clean:
-	rm task0 task1 task2 task3
+	rm task0 task1 task2 task3 task4 task5 task6 task7 task8 task9 task11 task12 task12 task14 task15
