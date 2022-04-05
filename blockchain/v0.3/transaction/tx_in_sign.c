@@ -6,6 +6,8 @@
 * @tx_id: hash of transaction which contains @in
 * @sender: key pair to use for signing
 * @all_unspent: list of unspent transactions in the blockchain
+*
+* Return: pointer to resulting sig struct, else NULL
 */
 sig_t *tx_in_sign(
 	tx_in_t *in,
@@ -30,7 +32,7 @@ sig_t *tx_in_sign(
 
 	ec_to_pub(sender, pubkey);
 
-	if (memcmp(pubkey, temp->out.pub, 32) != 0)
+	if (memcmp(pubkey, temp->out.pub, EC_PUB_LEN) != 0)
 		return (NULL); /* pubkey doesnt match */
 
 	ec_sign(sender, tx_id, 32, &in->sig);
