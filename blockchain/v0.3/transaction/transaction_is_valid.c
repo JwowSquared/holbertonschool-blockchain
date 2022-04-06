@@ -22,7 +22,6 @@ int transaction_is_valid(
 	transaction_hash(transaction, t_hash);
 	if (memcmp(transaction->id, t_hash, 32) != 0)
 		return (0);
-
 	u_size = llist_size(all_unspent);
 	for (i = 0; i < llist_size(transaction->inputs); i++)
 	{
@@ -30,8 +29,9 @@ int transaction_is_valid(
 		for (u = 0; u < u_size; u++)
 		{
 			u_token = llist_get_node_at(all_unspent, u);
-			if (memcmp(i_token->tx_out_hash, u_token->out.hash, 32) == 0 &&
-				memcmp(u_token->block_hash, i_token->block_hash, 32) == 0)
+			if (memcmp(i_token->tx_out_hash, u_token->out.hash, 32) != 0)
+				continue;
+			if (memcmp(u_token->block_hash, i_token->block_hash, 32) == 0)
 				break;
 		}
 		if (u == u_size)
