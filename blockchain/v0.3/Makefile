@@ -41,7 +41,7 @@ files-9 = transaction/tx_out_create.c transaction/tx_in_create.c transaction/tra
 task9: $(files-9)
 	$(compiler) -o task9 $(files-9) $(flags)
 
-files-11 = test/blockchain_destroy-main.c
+files-11 = test/blockchain_destroy-main.c *.c transaction/*.c provided/*.c
 task11: $(files-11)
 	$(compiler) -o task11 $(files-11) $(flags)
 

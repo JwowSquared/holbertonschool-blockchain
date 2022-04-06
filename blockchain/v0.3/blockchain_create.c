@@ -45,5 +45,7 @@ blockchain_t *blockchain_create(void)
 
 	llist_add_node(out->chain, g, ADD_NODE_FRONT);
 
+	out->unspent = llist_create(MT_SUPPORT_FALSE);
+
 	return (out);
 }
