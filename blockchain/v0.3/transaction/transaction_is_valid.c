@@ -30,7 +30,8 @@ int transaction_is_valid(
 		for (u = 0; u < u_size; u++)
 		{
 			u_token = llist_get_node_at(all_unspent, u);
-			if (memcmp(i_token->tx_out_hash, u_token->out.hash, 32) == 0)
+			if (memcmp(i_token->tx_out_hash, u_token->out.hash, 32) == 0 &&
+				memcmp(u_token->block_hash, i_token->block_hash, 32) == 0)
 				break;
 		}
 		if (u == u_size)
@@ -42,7 +43,6 @@ int transaction_is_valid(
 			return (0);
 		amount_in += u_token->out.amount;
 	}
-
 	for (i = 0; i < llist_size(transaction->outputs); i++)
 	{
 		o_token = llist_get_node_at(transaction->outputs, i);
