@@ -6,6 +6,7 @@
 */
 void block_destroy(block_t *block)
 {
-	/* block_t is a contiguous struct with no pointers */
+	if (block->transactions)
+		llist_destroy(block->transactions, 1, transaction_destroy);
 	free(block);
 }
