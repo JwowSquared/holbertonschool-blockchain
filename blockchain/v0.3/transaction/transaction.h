@@ -113,4 +113,8 @@ uint32_t select_inputs(
 	uint32_t amount,
 	uint8_t key_in[EC_PUB_LEN]);
 
+int transaction_is_valid(
+	transaction_t const *transaction,
+	llist_t *all_unspent);
+
 #endif /* _TRANSACTION_H_ */
