@@ -32,7 +32,7 @@ block_t *block_create(block_t const *prev,
 	memcpy(out->info.prev_hash, prev->hash, sizeof(prev->hash));
 	memset(out->hash, 0, sizeof(out->hash));
 
-	out->transactions = llist_create();
+	out->transactions = llist_create(MT_SUPPORT_FALSE);
 
 	return (out);
 }
