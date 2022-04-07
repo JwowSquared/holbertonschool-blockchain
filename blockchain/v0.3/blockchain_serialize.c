@@ -59,8 +59,7 @@ int blockchain_serialize(blockchain_t const *blockchain, char const *path)
 */
 void write_transactions(llist_t *transactions, FILE *file)
 {
-	int i, j;
-	uint32_t num_in, num_out;
+	uint32_t i, j, num_in, num_out;
 	transaction_t *t_token;
 	tx_in_t *i_token;
 	tx_out_t *o_token;
