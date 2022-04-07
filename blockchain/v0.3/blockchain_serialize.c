@@ -72,7 +72,7 @@ void write_transactions(llist_t *transactions, FILE *file)
 		num_out = llist_size(t_token->outputs);
 		fwrite(t_token, 1, 32, file);
 		fwrite(&num_in, 1, 4, file);
-		fwrite(&num-out, 1, 4, file);
+		fwrite(&num_out, 1, 4, file);
 		for (j = 0; j < num_in; j++)
 		{
 			i_token = llist_get_node_at(t_token->inputs, i);
