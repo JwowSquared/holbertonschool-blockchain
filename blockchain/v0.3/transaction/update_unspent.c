@@ -28,7 +28,7 @@ llist_t *update_unspent(
 		u_token = llist_get_node_at(all_unspent, i);
 		for (j = 0; j < t_size; j++)
 		{
-			t_token = llist_get_node_at(transactions, i);
+			t_token = llist_get_node_at(transactions, j);
 			for (k = 0; k < llist_size(t_token->inputs); k++)
 			{
 				i_token = llist_get_node_at(t_token->inputs, k);
