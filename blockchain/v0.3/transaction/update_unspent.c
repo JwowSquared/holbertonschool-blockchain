@@ -40,6 +40,8 @@ llist_t *update_unspent(
 		}
 		if (j == t_size)
 			llist_add_node(out, u_token, ADD_NODE_REAR);
+		else
+			printf("IGNORED TX INPUT!\n");
 	}
 	for (i = 0; i < llist_size(transactions); i++)
 	{
