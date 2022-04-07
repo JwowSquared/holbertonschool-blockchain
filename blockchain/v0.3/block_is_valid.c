@@ -23,10 +23,14 @@ block_t const valid_genesis = {
 * block_is_valid - determines whether a block is valid or not
 * @block: block to check
 * @prev_block: previous block to check against
+* @all_unspent: unspent transactions in the blockchain
 *
 * Return: 0 on success, else -1 (guessing, task doesnt say)
 */
-int block_is_valid(block_t const *block, block_t const *prev_block)
+int block_is_valid(
+	block_t const *block,
+	block_t const *prev_block,
+	llist_t *all_unspent)
 {
 	uint8_t hash_buf[SHA256_DIGEST_LENGTH];
 
@@ -65,5 +69,32 @@ int block_is_valid(block_t const *block, block_t const *prev_block)
 	if (!hash_matches_difficulty(block->hash, block->info.difficulty))
 		return (-1);
 
+	if (check_transactions(block, all_unspent) == -1)
+		return (-1);
+	return (0);
+}
+
+/**
+* check_transactions - checks all transactions in a block
+* @block: block to check
+* @all_unspent: used for validity checks
+*
+* Return: 0 if valid, else -1
+*/
+int check_transactions(block_t const *block, llist_t *all_unspent)
+{
+	int i;
+	transaction_t *t_token;
+
+	for (i = 0; i < llist_size(block->transactions); i++)
+	{
+		t_token = llist_get_node_at(block->transactions, i);
+		if (i == 0 && coinbase_is_valid(t_token, block->info.index) == 0)
+			return (-1);
+		if (i > 0 && transaction_is_valid(t_token, all_unspent) == 0)
+			return (-1);
+	}
+	if (i == 0)
+		return (-1);
 	return (0);
 }

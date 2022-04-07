@@ -113,11 +113,14 @@ int blockchain_serialize(blockchain_t const *, char const *);
 
 blockchain_t *blockchain_deserialize(char const *);
 
-int block_is_valid(block_t const *, block_t const *);
+int block_is_valid(block_t const *, block_t const *, llist_t *);
+int check_transactions(block_t const *block, llist_t *all_unspent);
 
 
 
-int hash_matches_difficulty(uint8_t const hash[SHA256_DIGEST_LENGTH], uint32_t difficulty);
+int hash_matches_difficulty(
+	uint8_t const hash[SHA256_DIGEST_LENGTH],
+	uint32_t difficulty);
 
 void block_mine(block_t *block);
 
