@@ -13,7 +13,7 @@ llist_t *update_unspent(
 	uint8_t block_hash[SHA256_DIGEST_LENGTH],
 	llist_t *all_unspent)
 {
-	int i, j, k, t_size, match;
+	int i, j, k, t_size;
 	tx_in_t *i_token;
 	tx_out_t *o_token;
 	unspent_tx_out_t *u_token;
@@ -25,28 +25,23 @@ llist_t *update_unspent(
 
 	for (i = 0; i < llist_size(all_unspent); i++)
 	{
-		match = 0;
 		u_token = llist_get_node_at(all_unspent, i);
 		for (j = 0; j < t_size; j++)
 		{
-			t_token = llist_get_node_at(transactions, j);
+			t_token = llist_get_node_at(transactions, i);
 			for (k = 0; k < llist_size(t_token->inputs); k++)
 			{
 				i_token = llist_get_node_at(t_token->inputs, k);
-				if (!memcmp(i_token->tx_out_hash, u_token->out.hash, 32))
-				{
-					match = 1;
+				if (!memcmp(u_token->out.hash, i_token->tx_out_hash, 32))
 					break;
-				}
 			}
-			if (match == 1)
+			if (k < llist_size(t_token->inputs))
 				break;
 		}
-		if (match == 0)
+		if (j == t_size)
 			llist_add_node(out, u_token, ADD_NODE_REAR);
 	}
-
-	for (i = 0; i < t_size; i++)
+	for (i = 0; i < llist_size(transactions); i++)
 	{
 		t_token = llist_get_node_at(transactions, i);
 		for (j = 0; j < llist_size(t_token->outputs); j++)
