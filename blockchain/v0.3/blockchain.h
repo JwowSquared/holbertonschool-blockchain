@@ -87,7 +87,8 @@ typedef struct block_s
 * @magic: identifies file as blockchain
 * @version: version of blockchain
 * @endian: 1 or 2 for little or big endian
-* @blocks: number of blocks in block chain
+* @blocks: number of blocks in blockchain
+* @unspent: number of unspent transactions in the blockchain
 */
 typedef struct block_header_s
 {
@@ -95,6 +96,7 @@ typedef struct block_header_s
 	unsigned char version[3];
 	unsigned char endian;
 	uint32_t blocks;
+	uint32_t unspent;
 } block_header_t;
 
 
