@@ -13,7 +13,7 @@ void read_transactions(block_t *block, FILE *file);
 blockchain_t *blockchain_deserialize(char const *path)
 {
 	FILE *file = NULL;
-	int i;
+	uint32_t i;
 	block_t *block;
 	block_header_t header;
 	blockchain_t *out;
