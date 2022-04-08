@@ -1,6 +1,78 @@
 compiler = gcc -Wall -Wextra -Werror -pedantic -g3 -I. -Itransaction/ -Iprovided/ -I../../crypto
 flags = -L../../crypto -lhblk_crypto -lllist -lssl -lcrypto -pthread
 
+lib-files = \
+blockchain_create.o \
+block_create.o \
+block_destroy.o \
+blockchain_destroy.o \
+block_hash.o \
+blockchain_serialize.o \
+blockchain_deserialize.o \
+block_is_valid.o \
+hash_matches_difficulty.o \
+blockchain_difficulty.o \
+block_mine.o \
+tx_out_create.o \
+unspent_tx_out_create.o \
+tx_in_create.o \
+transaction_hash.o \
+tx_in_sign.o \
+transaction_create.o \
+transaction_is_valid.o \
+coinbase_create.o \
+coinbase_is_valid.o \
+transaction_destroy.o \
+update_unspent.o
+
+libhblk_blockchain.a: $(lib-files)
+	ar rcs libhblk_blockchain.a $(lib-files)
+
+blockchain_create.o: blockchain_create.c
+	$(compiler) -c blockchain_create.c $(flags)
+block_create.o: block_create.c
+	$(compiler) -c block_create.c $(flags)
+block_destroy.o: block_destroy.c
+	$(compiler) -c block_destroy.c $(flags)
+blockchain_destroy.o: blockchain_destroy.c
+	$(compiler) -c blockchain_destroy.c $(flags)
+block_hash.o: block_hash.c
+	$(compiler) -c block_hash.c $(flags)
+blockchain_serialize.o: blockchain_serialize.c
+	$(compiler) -c blockchain_serialize.c $(flags)
+blockchain_deserialize.o: blockchain_deserialize.c
+	$(compiler) -c blockchain_deserialize.c $(flags)
+block_is_valid.o: block_is_valid.c
+	$(compiler) -c block_is_valid.c $(flags)
+hash_matches_difficulty.o: hash_matches_difficulty.c
+	$(compiler) -c hash_matches_difficulty.c $(flags)
+blockchain_difficulty.o: blockchain_difficulty.c
+	$(compiler) -c blockchain_difficulty.c $(flags)
+block_mine.o: block_mine.c
+	$(compiler) -c block_mine.c $(flags)
+tx_out_create.o: transaction/tx_out_create.c
+	$(compiler) -c transaction/tx_out_create.c $(flags)
+unspent_tx_out_create.o: transaction/unspent_tx_out_create.c
+	$(compiler) -c transaction/unspent_tx_out_create.c $(flags)
+tx_in_create.o: transaction/tx_in_create.c
+	$(compiler) -c transaction/tx_in_create.c $(flags)
+transaction_hash.o: transaction/transaction_hash.c
+	$(compiler) -c transaction/transaction_hash.c $(flags)
+tx_in_sign.o: transaction/tx_in_sign.c
+	$(compiler) -c transaction/tx_in_sign.c $(flags)
+transaction_create.o: transaction/transaction_create.c
+	$(compiler) -c transaction/transaction_create.c $(flags)
+transaction_is_valid.o: transaction/transaction_is_valid.c
+	$(compiler) -c transaction/transaction_is_valid.c $(flags)
+coinbase_create.o: transaction/coinbase_create.c
+	$(compiler) -c transaction/coinbase_create.c $(flags)
+coinbase_is_valid.o: transaction/coinbase_is_valid.c
+	$(compiler) -c transaction/coinbase_is_valid.c $(flags)
+transaction_destroy.o: transaction/transaction_destroy.c
+	$(compiler) -c transaction/transaction_destroy.c $(flags)
+update_unspent.o: transaction/update_unspent.c
+	$(compiler) -c transaction/update_unspent.c $(flags)
+
 files-0 = transaction/tx_out_create.c provided/_print_hex_buffer.c transaction/test/tx_out_create-main.c
 task0: $(files-0)
 	$(compiler) -o task0 $(files-0) $(flags)
@@ -64,4 +136,4 @@ files-15r = test/blockchain_deserialize-main.c *.c transaction/*.c provided/*.c
 task15-read: $(files-15r)
 	$(compiler) -o task15-read $(files-15r) $(flags)
 clean:
-	rm task0 task1 task2 task3 task4 task5 task6 task7 task8 task9 task11 task12 task12 task14 task15
+	rm task* $(lib-files)
