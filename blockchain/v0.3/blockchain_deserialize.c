@@ -68,8 +68,7 @@ blockchain_t *blockchain_deserialize(char const *path)
 */
 void read_transactions(block_t *block, FILE *file)
 {
-	uint32_t i;
-	int j, num_in, num_out, t_size;
+	int i, j, num_in, num_out, t_size;
 	transaction_t *t_token;
 	tx_in_t *i_token;
 	tx_out_t *o_token;
