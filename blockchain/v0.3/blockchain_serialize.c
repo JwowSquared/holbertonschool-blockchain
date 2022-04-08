@@ -75,12 +75,12 @@ void write_transactions(llist_t *transactions, FILE *file)
 		fwrite(&num_out, 1, 4, file);
 		for (j = 0; j < num_in; j++)
 		{
-			i_token = llist_get_node_at(t_token->inputs, i);
+			i_token = llist_get_node_at(t_token->inputs, j);
 			fwrite(i_token, 1, 169, file);
 		}
 		for (j = 0; j < num_out; j++)
 		{
-			o_token = llist_get_node_at(t_token->outputs, i);
+			o_token = llist_get_node_at(t_token->outputs, j);
 			fwrite(o_token, 1, 101, file);
 		}
 	}

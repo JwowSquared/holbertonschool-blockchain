@@ -57,9 +57,11 @@ files-14 = blockchain_create.c block_create.c block_destroy.c blockchain_destroy
 task14: $(files-14)
 	$(compiler) -o task14 $(files-14) $(flags)
 
-files-15 = test/blockchain_deserialize-main.c *.c transaction/*.c provided/*.c
-task15: $(files-15)
-	$(compiler) -o task15 $(files-15) $(flags)
-
+files-15w = test/blockchain_serialize-main.c *.c transaction/*.c provided/*.c
+task15-write: $(files-15w)
+	$(compiler) -o task15-write $(files-15w) $(flags)
+files-15r = test/blockchain_deserialize-main.c *.c transaction/*.c provided/*.c
+task15-read: $(files-15r)
+	$(compiler) -o task15-read $(files-15r) $(flags)
 clean:
 	rm task0 task1 task2 task3 task4 task5 task6 task7 task8 task9 task11 task12 task12 task14 task15
