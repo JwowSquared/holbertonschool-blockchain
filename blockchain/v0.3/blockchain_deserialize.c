@@ -17,6 +17,7 @@ blockchain_t *blockchain_deserialize(char const *path)
 	block_t *block;
 	block_header_t header;
 	blockchain_t *out;
+	unspent_tx_out_t *u_token;
 
 	file = fopen(path, "rb");
 	if (!file)
@@ -67,7 +68,7 @@ blockchain_t *blockchain_deserialize(char const *path)
 */
 void read_transactions(block_t *block, FILE *file)
 {
-	uint32_t i, j, num_in, num_out, t_size;
+	int32_t i, j, num_in, num_out, t_size;
 	transaction_t *t_token;
 	tx_in_t *i_token;
 	tx_out_t *o_token;
@@ -78,7 +79,7 @@ void read_transactions(block_t *block, FILE *file)
 		block->transactions = NULL;
 		return;
 	}
-	block_transactions = llist_create(MT_SUPPORT_FALSE);
+	block->transactions = llist_create(MT_SUPPORT_FALSE);
 	for (i = 0; i < t_size; i++)
 	{
 		t_token = malloc(sizeof(transaction_t));

@@ -13,7 +13,7 @@ void header_setup(block_header_t *);
 int blockchain_serialize(blockchain_t const *blockchain, char const *path)
 {
 	FILE *file = NULL;
-	uint32_t i, t_size;
+	int32_t i, t_size;
 	block_t *block;
 	unspent_tx_out_t *u_token;
 	block_header_t header;
@@ -59,8 +59,7 @@ int blockchain_serialize(blockchain_t const *blockchain, char const *path)
 */
 void write_transactions(llist_t *transactions, FILE *file)
 {
-	int i;
-	uint32_t j, num_in, num_out;
+	int32_t i, j, num_in, num_out;
 	transaction_t *t_token;
 	tx_in_t *i_token;
 	tx_out_t *o_token;
