@@ -9,9 +9,6 @@ void block_mine(block_t *block)
 	if (block == NULL)
 		return;
 
-	if (block->info.difficulty == 0)
-		return;
-
 	block_hash(block, block->hash);
 
 	/* This may take a while... */
