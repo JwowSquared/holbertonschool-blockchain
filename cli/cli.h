@@ -29,6 +29,7 @@ int bi_save(blockchain_t **, block_t **, EC_KEY **, char *, char *);
 /* Helper Functions */
 void display_welcome(void);
 uint32_t check_balance(llist_t *all_unspent, uint8_t key_in[EC_PUB_LEN]);
+void convert_key(char *key, uint8_t pub[EC_PUB_LEN]);
 
 /* Provided Functions */
 void _blockchain_print(blockchain_t const *blockchain);

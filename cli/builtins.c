@@ -73,10 +73,50 @@ int bi_wallet_save(blockchain_t **bc, block_t **active, EC_KEY **key, char *arg1
 
 int bi_send(blockchain_t **bc, block_t **active, EC_KEY **key, char *arg1, char *arg2)
 {
-	(void)bc;
-	(void)active;
-	(void)key;
-	printf("REACHED SEND %s %s\n", arg1, arg2);
+	uint8_t pub[EC_PUB_LEN];
+	transaction_t *t_token;
+	EC_KEY *target;
+	uint32_t amount;
+
+	if (arg1 == NULL || arg2 == NULL)
+	{
+		printf("Usage: send <amount> <address>\n");
+		return (1);
+	}
+
+	amount = atoi(arg1);
+	if (amount == 0)
+	{
+		printf("Error: Amount must be a non-zero integer\n");
+		return (1);
+	}
+
+	convert_key(arg2, pub);
+	target = ec_from_pub(pub);
+	if (target == NULL)
+	{
+		printf("Error: Invalid Address\n");
+		return (1);
+	}
+	ec_to_pub(*key, pub);
+	if (amount > check_balance((*bc)->unspent, pub))
+	{
+		printf("Insufficient Funds\n");
+		return (1);
+	}
+
+	t_token = transaction_create(*key, target, (uint32_t)amount, (*bc)->unspent);
+	if (t_token == NULL)
+	{
+		printf("Error Creating Transaction\n");
+		return (1);
+	}
+
+	llist_add_node((*active)->transactions, t_token, ADD_NODE_REAR);
+	EC_KEY_free(target);
+
+	printf("Transaction now pending\n");
+
 	return (1);
 }
 
@@ -106,9 +146,13 @@ int bi_mine(blockchain_t **bc, block_t **active, EC_KEY **key, char *arg1, char 
 	llist_destroy((*active)->transactions, 0, NULL);
 	(*active)->transactions = verified;
 
-	llist_add_node((*bc)->chain, *active, ADD_NODE_REAR);
 	(*active)->info.difficulty = blockchain_difficulty(*bc);
 	block_mine(*active);
+	llist_add_node((*bc)->chain, *active, ADD_NODE_REAR);
+
+	printf("Block mined: [%u] ", (*active)->info.difficulty);
+        _print_hex_buffer((*active)->hash, SHA256_DIGEST_LENGTH);
+        printf("\n");
 
 	(*bc)->unspent = update_unspent((*active)->transactions, (*active)->hash, (*bc)->unspent);
 	*active = block_create(*active, (int8_t *)"Minecraft", 9);
@@ -121,7 +165,6 @@ int bi_info(blockchain_t **bc, block_t **active, EC_KEY **key, char *arg1, char 
 	uint8_t pub[EC_PUB_LEN];
 
 	(void)active;
-	(void)arg1;
 	(void)arg2;
 
 	printf("=====================================\n");
@@ -132,7 +175,8 @@ int bi_info(blockchain_t **bc, block_t **active, EC_KEY **key, char *arg1, char 
 	_print_hex_buffer(ec_to_pub(*key, pub), EC_PUB_LEN);
 	printf("\nBalance: %u\n", check_balance((*bc)->unspent, pub));
 	printf("=====================================\n");
-	_blockchain_print(*bc);
+	if (arg1 != NULL)
+		_blockchain_print(*bc);
 
 	return (1);
 }

@@ -18,7 +18,6 @@ int main(void)
 	bc = blockchain_create();
 	active = llist_get_head(bc->chain);
 	active = block_create(active, (int8_t *)"Minecraft", 9);
-	active->info.difficulty = 20;
 
 	display_welcome();
 
