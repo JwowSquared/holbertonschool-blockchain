@@ -1,7 +1,6 @@
 #include "blockchain.h"
 
 int check_header(block_header_t *);
-void swap_block(block_t *);
 void read_transactions(block_t *block, FILE *file);
 
 /**
@@ -26,8 +25,6 @@ blockchain_t *blockchain_deserialize(char const *path)
 	fread(&header, sizeof(header), 1, file);
 	if (!check_header(&header))
 		return (NULL);
-	if (header.endian == 2)
-		_swap_endian(&header.blocks, sizeof(header.blocks));
 
 	if (header.blocks == 0)
 	{
@@ -43,8 +40,6 @@ blockchain_t *blockchain_deserialize(char const *path)
 		block = malloc(sizeof(block_t));
 		fread(block, 56, 1, file);
 		fread(&block->data.len, 4, 1, file);
-		if (header.endian == 2)
-			swap_block(block);
 		memset(block->data.buffer, 0, sizeof(block->data.buffer));
 		fread(&block->data.buffer, block->data.len, 1, file);
 		fread(&block->hash, 32, 1, file);
@@ -128,17 +123,4 @@ int check_header(block_header_t *header)
 		return (0);
 
 	return (1);
-}
-
-/**
-* swap_block - swaps the endianness of a block
-* @block: block to swap
-*/
-void swap_block(block_t *block)
-{
-	_swap_endian(&block->info.index, 4);
-	_swap_endian(&block->info.difficulty, 4);
-	_swap_endian(&block->info.timestamp, 8);
-	_swap_endian(&block->info.nonce, 8);
-	_swap_endian(&block->data.len, 4);
 }
