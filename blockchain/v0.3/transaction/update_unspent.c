@@ -51,6 +51,6 @@ llist_t *update_unspent(
 			llist_add_node(out, u_token, ADD_NODE_REAR);
 		}
 	}
-	llist_destroy(all_unspent, 0, NULL);
+	llist_destroy(all_unspent, 1, NULL);
 	return (out);
 }
