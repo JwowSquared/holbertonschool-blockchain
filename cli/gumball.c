@@ -19,6 +19,9 @@ int (*gumball(char *cmd))(blockchain_t **, block_t **, EC_KEY **, char *, char *
 		{"save", &bi_save}
 	};
 
+	if (cmd == NULL)
+		return (NULL);
+
 	for (i = 0; i < 8; i++)
 	{
 		if (!strcmp(pot[i].cmd, cmd))
