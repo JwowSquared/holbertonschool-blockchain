@@ -75,6 +75,10 @@ int bi_send(blockchain_t **bc, block_t **active,
 	if (amount == 0)
 		return (e_print("Amount must be a non-zero integer\n"));
 
+	ec_to_pub(*key, pub);
+	if (amount > check_balance((*bc)->unspent, pub))
+		return (e_print("Insufficient Funds\n"));
+
 	if (!convert_key(arg2, pub))
 		return (e_print("Invalid Key Format\n"));
 
@@ -82,13 +86,12 @@ int bi_send(blockchain_t **bc, block_t **active,
 	if (target == NULL)
 		return (e_print("Invalid Address\n"));
 
-	ec_to_pub(*key, pub);
-	if (amount > check_balance((*bc)->unspent, pub))
-		return (e_print("Insufficient Funds\n"));
-
 	t_token = transaction_create(*key, target, (uint32_t)amount, (*bc)->unspent);
 	if (t_token == NULL)
+	{
+		EC_KEY_free(target);
 		return (e_print("Error Creating Transaction\n"));
+	}
 
 	llist_add_node((*active)->transactions, t_token, ADD_NODE_REAR);
 	EC_KEY_free(target);

@@ -106,6 +106,7 @@ int bi_wallet_load(blockchain_t **bc, block_t **active,
 		return (0);
 	}
 
+	EC_KEY_free(*key);
 	*key = out;
 	printf("Successfully loaded wallet\n");
 

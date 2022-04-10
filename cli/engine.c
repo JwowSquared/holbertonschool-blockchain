@@ -37,5 +37,11 @@ int main(void)
 			printf("unrecognized command\n");
 	}
 
+	block_destroy(active);
+	blockchain_destroy(bc);
+	EC_KEY_free(wallet);
+	if (line)
+		free(line);
+
 	return (0);
 }
