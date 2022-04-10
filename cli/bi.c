@@ -14,39 +14,44 @@ int bi_mine(blockchain_t **bc, block_t **active,
 	EC_KEY **key, char *arg1, char *arg2)
 {
 	int i;
-	llist_t *verified;
+	llist_t *verified, *temp;
 	transaction_t *t_token;
 
 	(void)arg1;
 	(void)arg2;
-
 	verified = llist_create(MT_SUPPORT_FALSE);
+	temp = llist_create(MT_SUPPORT_FALSE);
 	t_token = coinbase_create(*key, (*active)->info.index);
 	llist_add_node(verified, t_token, ADD_NODE_REAR);
+	(*bc)->unspent = update_unspent(verified,
+		(*active)->hash, (*bc)->unspent);
 	for (i = 0; i < llist_size((*active)->transactions); i++)
 	{
 		t_token = llist_get_node_at((*active)->transactions, i);
 		if (transaction_is_valid(t_token, (*bc)->unspent))
+		{
 			llist_add_node(verified, t_token, ADD_NODE_REAR);
+			llist_add_node(temp, t_token, ADD_NODE_REAR);
+			(*bc)->unspent = update_unspent(temp,
+				(*active)->hash, (*bc)->unspent);
+			llist_pop(temp);
+		}
 		else
+		{
 			printf("Transaction %d invalid; skipped\n", i);
+			transaction_destroy(t_token);
+		}
 	}
-
+	llist_destroy(temp, 0, NULL);
 	llist_destroy((*active)->transactions, 0, NULL);
 	(*active)->transactions = verified;
-
 	(*active)->info.difficulty = blockchain_difficulty(*bc);
 	block_mine(*active);
 	llist_add_node((*bc)->chain, *active, ADD_NODE_REAR);
-
 	printf("Block mined: [%u] ", (*active)->info.difficulty);
 	_print_hex_buffer((*active)->hash, SHA256_DIGEST_LENGTH);
 	printf("\n");
-
-	(*bc)->unspent = update_unspent((*active)->transactions,
-		(*active)->hash, (*bc)->unspent);
 	*active = block_create(*active, (int8_t *)"Minecraft", 9);
-
 	return (1);
 }
 
