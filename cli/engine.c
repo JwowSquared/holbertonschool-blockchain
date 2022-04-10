@@ -1,9 +1,9 @@
 #include "cli.h"
 
 /**
+* main - entry point for CLI
 *
-*
-*
+* Return: always 0
 */
 int main(void)
 {

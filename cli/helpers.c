@@ -1,5 +1,8 @@
 #include "cli.h"
 
+/**
+* display_welcome - prints a welcome message
+*/
 void display_welcome(void)
 {
 	printf("==================================\n\n");
@@ -11,8 +14,11 @@ void display_welcome(void)
 }
 
 /**
+* check_balance - determines the wallet balance of a key
+* @all_unspent: linked list of all unspent transactions
+* @key_in: key to determine balance of
 *
-*
+* Return: balance of wallet
 */
 uint32_t check_balance(llist_t *all_unspent, uint8_t key_in[EC_PUB_LEN])
 {
@@ -30,9 +36,19 @@ uint32_t check_balance(llist_t *all_unspent, uint8_t key_in[EC_PUB_LEN])
 	return (balance);
 }
 
-void convert_key(char *key, uint8_t pub[EC_PUB_LEN])
+/**
+* convert_key - converts a string into a public key
+* @key: string to convert
+* @pub: buffer to write to
+*
+* Return: 1 on success, else 0
+*/
+int convert_key(char *key, uint8_t pub[EC_PUB_LEN])
 {
 	uint32_t i = 0, j = 0, left, right;
+
+	if (strlen(key) != EC_PUB_LEN * 2)
+		return (0);
 
 	while (i < EC_PUB_LEN)
 	{
@@ -47,9 +63,14 @@ void convert_key(char *key, uint8_t pub[EC_PUB_LEN])
 		else
 			right -= 48;
 
+		if (left > 15 || right > 15)
+			return (0);
+
 		pub[i] = left << 4;
 		pub[i] += right;
 		j += 2;
 		i += 1;
 	}
+
+	return (1);
 }

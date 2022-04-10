@@ -1,11 +1,12 @@
 #include "cli.h"
 
 /**
+* gumball - matches cmd with function to return
+* @cmd: command to enter the gumball machine
 *
-*
-*
+* Return: function pointer to corresponding command
 */
-int (*gumball(char *cmd))(blockchain_t **, block_t **, EC_KEY **, char *, char *)
+int (*gumball(char *cmd))(bc_t * *, block_t * *, EC_KEY * *, char *, char *)
 {
 	int i;
 	gumball_t pot[] = {
