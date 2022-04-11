@@ -1,5 +1,8 @@
 #include "transaction.h"
 
+int unspent_match(unspent_tx_out_t *u_token, tx_in_t *i_token);
+void _print_hex_buffer(uint8_t const *buf, size_t len);
+
 /**
 * update_unspent - returns a new list of all unspent transactions
 * @transactions: all validated transactions in the block
@@ -18,11 +21,9 @@ llist_t *update_unspent(
 	tx_out_t *o_token;
 	unspent_tx_out_t *u_token;
 	transaction_t *t_token;
-	llist_t *out;
+	llist_t *out = llist_create(MT_SUPPORT_FALSE);
 
-	out = llist_create(MT_SUPPORT_FALSE);
 	t_size = llist_size(transactions);
-
 	for (i = 0; i < llist_size(all_unspent); i++)
 	{
 		u_token = llist_get_node_at(all_unspent, i);
@@ -32,7 +33,7 @@ llist_t *update_unspent(
 			for (k = 0; k < llist_size(t_token->inputs); k++)
 			{
 				i_token = llist_get_node_at(t_token->inputs, k);
-				if (!memcmp(u_token->out.hash, i_token->tx_out_hash, 32))
+				if (unspent_match(u_token, i_token))
 					break;
 			}
 			if (k < llist_size(t_token->inputs))
@@ -40,6 +41,8 @@ llist_t *update_unspent(
 		}
 		if (j == t_size)
 			llist_add_node(out, u_token, ADD_NODE_REAR);
+		else
+			free(u_token);
 	}
 	for (i = 0; i < llist_size(transactions); i++)
 	{
@@ -51,6 +54,22 @@ llist_t *update_unspent(
 			llist_add_node(out, u_token, ADD_NODE_REAR);
 		}
 	}
-	llist_destroy(all_unspent, 1, NULL);
+	llist_destroy(all_unspent, 0, NULL);
 	return (out);
+}
+
+/**
+* unspent_match - determines if an unspent token matches an input token
+* @u_token: unspent out transaction
+* @i_token: transaction input
+*
+* Return: 1 on match, else 0
+*/
+int unspent_match(unspent_tx_out_t *u_token, tx_in_t *i_token)
+{
+	if (memcmp(u_token->out.hash, i_token->tx_out_hash, 32))
+		return (0);
+	if (memcmp(u_token->tx_id, i_token->tx_id, 32))
+		return (0);
+	return (1);
 }
