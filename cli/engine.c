@@ -7,17 +7,12 @@
 */
 int main(void)
 {
-	EC_KEY *wallet;
-	blockchain_t *bc;
-	block_t *active;
+	state_manager_t *s;
 	char *line = NULL, *cmd, *arg1, *arg2;
 	size_t len;
-	int (*func)(blockchain_t **, block_t **, EC_KEY **, char *, char *);
+	int (*func)(state_manager_t *, char *, char *);
 
-	wallet = ec_create();
-	bc = blockchain_create();
-	active = llist_get_head(bc->chain);
-	active = block_create(active, (int8_t *)"Minecraft", 9);
+	s = create_state_manager();
 
 	display_welcome();
 
@@ -32,14 +27,12 @@ int main(void)
 		arg2 = strtok(NULL, " ");
 		func = gumball(cmd);
 		if (func)
-			func(&bc, &active, &wallet, arg1, arg2);
+			func(s, arg1, arg2);
 		else
 			printf("unrecognized command\n");
 	}
 
-	block_destroy(active);
-	blockchain_destroy(bc);
-	EC_KEY_free(wallet);
+	destroy_state_manager(s);
 	if (line)
 		free(line);
 

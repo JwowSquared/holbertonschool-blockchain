@@ -6,7 +6,7 @@
 *
 * Return: function pointer to corresponding command
 */
-int (*gumball(char *cmd))(bc_t * *, block_t * *, EC_KEY * *, char *, char *)
+int (*gumball(char *cmd))(state_manager_t *, char *, char *)
 {
 	int i;
 	gumball_t pot[] = {

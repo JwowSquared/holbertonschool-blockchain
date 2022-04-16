@@ -128,4 +128,8 @@ llist_t *update_unspent(
 	uint8_t block_hash[SHA256_DIGEST_LENGTH],
 	llist_t *all_unspent);
 
+int unspent_match(unspent_tx_out_t *u_token, tx_in_t *i_token);
+void _print_hex_buffer(uint8_t const *buf, size_t len);
+int remove_spent(llist_node_t node, void *data);
+
 #endif /* _TRANSACTION_H_ */

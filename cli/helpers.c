@@ -10,7 +10,7 @@ void display_welcome(void)
 	printf("   A new blockchain and wallet\n");
 	printf("   have been generated for you.\n\n");
 	printf("==================================\n");
-	bi_help(NULL, NULL, NULL, NULL, NULL);
+	bi_help(NULL, NULL, NULL);
 }
 
 /**

@@ -1,8 +1,5 @@
 #include "transaction.h"
 
-int unspent_match(unspent_tx_out_t *u_token, tx_in_t *i_token);
-void _print_hex_buffer(uint8_t const *buf, size_t len);
-
 /**
 * update_unspent - returns a new list of all unspent transactions
 * @transactions: all validated transactions in the block
@@ -72,4 +69,24 @@ int unspent_match(unspent_tx_out_t *u_token, tx_in_t *i_token)
 	if (memcmp(u_token->tx_id, i_token->tx_id, 32))
 		return (0);
 	return (1);
+}
+
+int remove_spent(llist_node_t node, void *data)
+{
+	llist_t *inputs;
+	unspent_tx_out_t *u_token;
+	tx_in_t *i_token;
+	int i;
+
+	u_token = (unspent_tx_out_t *)node;
+	inputs = (llist_t *)data;
+
+	for (i = 0; i < llist_size(inputs); i++)
+	{
+		i_token = llist_get_node_at(inputs, i);
+		if (unspent_match(u_token, i_token))
+			return (1);
+	}
+
+	return (0);
 }
