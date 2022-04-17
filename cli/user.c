@@ -1,5 +1,12 @@
 #include "cli.h"
 
+/**
+* create_user - creates a new user
+* @name: username
+* @pass: password
+*
+* Return: new user object, else NULL
+*/
 user_t *create_user(char *name, char *pass)
 {
 	user_t *out;
@@ -20,26 +27,10 @@ user_t *create_user(char *name, char *pass)
 	return (out);
 }
 
-user_t *login(llist_t *users, char *name, char *pass)
-{
-	uint8_t hash[SHA256_DIGEST_LENGTH];
-	int i;
-	user_t *user;
-
-	sha256((int8_t *)pass, strlen(pass), hash);
-
-	for (i = 0; i < llist_size(users); i++)
-	{
-		user = llist_get_node_at(users, i);
-		if (strcmp(user->name, name))
-			continue;
-		if (!memcmp(hash, user->pass, SHA256_DIGEST_LENGTH))
-			return (user);
-	}
-
-	return (NULL);
-}
-
+/**
+* destroy_user - frees memory associated with a user object
+* @node: user to free
+*/
 void destroy_user(llist_node_t node)
 {
 	user_t *user;
@@ -49,6 +40,11 @@ void destroy_user(llist_node_t node)
 	free(user);
 }
 
+/**
+* load_users - pre-loads existing users from file
+*
+* Return: list of all users, can be empty
+*/
 llist_t *load_users(void)
 {
 	llist_t *out;
@@ -87,6 +83,12 @@ llist_t *load_users(void)
 	return (out);
 }
 
+/**
+* save_users - saves users to file
+* @users: list of all users
+*
+* Return: 0 on success, else -1
+*/
 int save_users(llist_t *users)
 {
 	struct stat st = {0};

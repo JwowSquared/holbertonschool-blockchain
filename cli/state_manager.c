@@ -1,5 +1,10 @@
 #include "cli.h"
 
+/**
+* create_state_manager - initializes the state of the program
+*
+* Return: pointer to state manager object, else NULL
+*/
 state_manager_t *create_state_manager(void)
 {
 	state_manager_t *out;
@@ -18,6 +23,10 @@ state_manager_t *create_state_manager(void)
 	return (out);
 }
 
+/**
+* dupe_unspent - makes a local copy of unspent
+* @s: state manager
+*/
 void dupe_unspent(state_manager_t *s)
 {
 	int i;
@@ -32,6 +41,10 @@ void dupe_unspent(state_manager_t *s)
 	}
 }
 
+/**
+* destroy_state_manager - frees data associated with a state manager
+* @s: state manager
+*/
 void destroy_state_manager(state_manager_t *s)
 {
 	if (s == NULL)
