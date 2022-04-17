@@ -15,7 +15,7 @@ int bi_mine(state_manager_t *s, char *arg1, char *arg2)
 	(void)arg1;
 	(void)arg2;
 
-	t_token = coinbase_create(s->key, s->block->info.index);
+	t_token = coinbase_create(s->user->key, s->block->info.index);
 	llist_add_node(s->block->transactions, t_token, ADD_NODE_FRONT);
 
 	s->block->info.difficulty = blockchain_difficulty(s->bc);
@@ -56,15 +56,14 @@ int bi_send(state_manager_t *s, char *arg1, char *arg2)
 	amount = atoi(arg1);
 	if (amount == 0)
 		return (e_print("Amount must be a non-zero integer\n"));
-	ec_to_pub(s->key, pub);
-	if (amount > check_balance(s->utxo, pub))
+	if (amount > check_balance(s->utxo, s->user->pub))
 		return (e_print("Insufficient Funds\n"));
 	if (!convert_key(arg2, pub))
 		return (e_print("Invalid Key Format\n"));
 	target = ec_from_pub(pub);
 	if (target == NULL)
 		return (e_print("Invalid Address\n"));
-	t_token = transaction_create(s->key, target, (uint32_t)amount, s->utxo);
+	t_token = transaction_create(s->user->key, target, (uint32_t)amount, s->utxo);
 	EC_KEY_free(target);
 	if (t_token == NULL)
 		return (e_print("Error Creating Transaction\n"));
@@ -103,7 +102,7 @@ int bi_info(state_manager_t *s, char *arg1, char *arg2)
 	printf("num Unspent: %d\n", llist_size(s->utxo));
 	printf("num Pending Transactions: %d\n", llist_size(s->block->transactions));
 	printf("Your Address: ");
-	_print_hex_buffer(ec_to_pub(s->key, pub), EC_PUB_LEN);
+	_print_hex_buffer(s->user->pub, EC_PUB_LEN);
 	printf("\nBalance: %u\n", check_balance(s->utxo, pub));
 	printf("=====================================\n");
 	if (arg1 != NULL)

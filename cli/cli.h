@@ -7,19 +7,37 @@
 #include "../crypto/hblk_crypto.h"
 #include "../blockchain/v0.3/blockchain.h"
 
+#define NAME_MAX_LEN 13
+
+/**
+* struct user_s - blockchain user
+* @key: key object used for transactions
+* @name: user's login name
+* @pass: user's hashed password
+* @pub: user's public key
+*/
+typedef struct user_s
+{
+	EC_KEY *key;
+	char name[NAME_MAX_LEN];
+	uint8_t pass[SHA256_DIGEST_LENGTH];
+	uint8_t pub[EC_PUB_LEN];
+} user_t;
+
 /**
 * struct state_manager_s - manages the state of the program
 * @bc: reference to blockchain
 * @block: reference to active block being built
-* @key: current user's key info
+* @user: current user
 * @utxo: copy of blockchain's unspent list to remove from on SEND
 */
 typedef struct state_manager_s
 {
 	blockchain_t *bc;
 	block_t *block;
-	EC_KEY *key;
+	user_t *user;
 	llist_t *utxo;
+	llist_t *all_users;
 } state_manager_t;
 
 /**
@@ -35,6 +53,13 @@ typedef struct gball_s
 
 /* Gumball */
 int (*gumball(char *cmd))(state_manager_t *, char *, char *);
+
+/* User */
+user_t *create_user(char *, char *);
+user_t *login(llist_t *, char *, char *);
+void destroy_user(llist_node_t);
+llist_t *load_users(void);
+int save_users(llist_t *);
 
 /* State Manager */
 state_manager_t *create_state_manager(void);

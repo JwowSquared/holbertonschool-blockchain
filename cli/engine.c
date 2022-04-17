@@ -14,6 +14,36 @@ int main(void)
 
 	s = create_state_manager();
 
+	while (1)
+	{
+		printf("ENTER USERNAME + PASSWORD\nbc$ ");
+		if (getline(&line, &len, stdin) == -1)
+			break;
+		line = strtok(line, "\n");
+		arg1 = strtok(line, " ");
+		arg2 = strtok(NULL, " ");
+		s->user = login(s->all_users, arg1, arg2);
+		if (s->user != NULL)
+			break;
+		printf("INVALID LOGIN, CREATE NEW USERNAME + PASSWORD:\nbc$ ");
+		if (getline(&line, &len, stdin) == -1)
+			break;
+		line = strtok(line, "\n");
+		arg1 = strtok(line, " ");
+		arg2 = strtok(NULL, " ");
+		s->user = create_user(arg1, arg2);
+		llist_add_node(s->all_users, s->user, ADD_NODE_REAR);
+		break;
+	}
+
+	if (s->user == NULL)
+	{
+		destroy_state_manager(s);
+		if (line)
+			free(line);
+		return (0);
+	}
+
 	display_welcome();
 
 	while (1)
@@ -32,6 +62,7 @@ int main(void)
 			printf("unrecognized command\n");
 	}
 
+	save_users(s->all_users);
 	destroy_state_manager(s);
 	if (line)
 		free(line);

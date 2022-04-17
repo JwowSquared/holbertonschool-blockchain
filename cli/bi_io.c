@@ -92,8 +92,8 @@ int bi_wallet_load(state_manager_t *s, char *arg1, char *arg2)
 		return (0);
 	}
 
-	EC_KEY_free(s->key);
-	s->key = out;
+	EC_KEY_free(s->user->key);
+	s->user->key = out;
 	printf("Successfully loaded wallet\n");
 
 	return (1);
@@ -117,7 +117,7 @@ int bi_wallet_save(state_manager_t *s, char *arg1, char *arg2)
 		return (0);
 	}
 
-	if (ec_save(s->key, arg1) == -1)
+	if (ec_save(s->user->key, arg1) == -1)
 	{
 		printf("Error saving key to %s\n", arg1);
 		return (0);
