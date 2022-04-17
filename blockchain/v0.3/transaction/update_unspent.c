@@ -71,6 +71,13 @@ int unspent_match(unspent_tx_out_t *u_token, tx_in_t *i_token)
 	return (1);
 }
 
+/**
+* remove_spent - removes spent transactions from unspent list
+* @node: unspent token to potentially be removed
+* @data: linked list of transaction inputs
+*
+* Return: 1 if any input matches node, else 0
+*/
 int remove_spent(llist_node_t node, void *data)
 {
 	llist_t *inputs;
