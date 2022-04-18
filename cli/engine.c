@@ -23,7 +23,7 @@ int main(void)
 		return (0);
 	}
 
-	display_welcome();
+	display_welcome(s->user->name);
 
 	while (1)
 	{

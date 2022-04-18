@@ -49,7 +49,7 @@ void destroy_state_manager(state_manager_t *s)
 	if (s == NULL)
 		return;
 
-	blockchain_destroy(s->bc);	
+	blockchain_destroy(s->bc);
 	llist_destroy(s->pending, 1, (node_dtor_t)transaction_destroy);
 	llist_destroy(s->utxo, 0, NULL);
 	llist_destroy(s->all_users, 1, destroy_user);

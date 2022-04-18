@@ -18,7 +18,7 @@ int (*gumball(char *cmd))(state_manager_t *, char *, char *)
 		{"info", &bi_info},
 		{"load", &bi_load},
 		{"save", &bi_save},
-		{"bcprint", &bi_bcprint}
+		{"print", &bi_print}
 	};
 
 	if (cmd == NULL)

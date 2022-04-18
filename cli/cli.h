@@ -77,7 +77,14 @@ int user_name_exists(llist_t *users, char *name);
 int bi_help(state_manager_t *, char *, char *);
 int bi_send(state_manager_t *, char *, char *);
 int bi_mine(state_manager_t *, char *, char *);
-int bi_bcprint(state_manager_t *, char *, char *);
+int bi_print(state_manager_t *, char *, char *);
+
+/* Print Helper Functions */
+void print_transaction(state_manager_t *s, transaction_t *t_token);
+char *find_user_name(llist_t *all_users, uint8_t pub[EC_PUB_LEN]);
+int find_origin(llist_node_t node, void *data);
+int find_tx(llist_node_t node, void *data);
+int find_out(llist_node_t node, void *data);
 
 /* Debug Functions */
 int bi_wallet_load(state_manager_t *, char *, char *);
@@ -87,7 +94,7 @@ int bi_load(state_manager_t *, char *, char *);
 int bi_save(state_manager_t *, char *, char *);
 
 /* Helper Functions */
-void display_welcome(void);
+void display_welcome(char *);
 uint32_t check_balance(llist_t *all_unspent, uint8_t key_in[EC_PUB_LEN]);
 int convert_key(char *key, uint8_t pub[EC_PUB_LEN]);
 void safe_free(char *s);

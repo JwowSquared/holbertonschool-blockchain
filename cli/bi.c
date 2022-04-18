@@ -87,6 +87,52 @@ int bi_send(state_manager_t *s, char *arg1, char *arg2)
 }
 
 /**
+* bi_print - prints the blockchain
+* @s: state manager
+* @arg1: left bound index (integer)
+* @arg2: right bound index (integer)
+*
+* Return: 1 on success, else 0
+*/
+int bi_print(state_manager_t *s, char *arg1, char *arg2)
+{
+	int i, j, left, right;
+	block_t *block;
+	transaction_t *t_token;
+
+	if (arg1 != NULL)
+		left = atoi(arg1);
+	else
+		left = 0;
+
+	if (arg2 != NULL)
+		right = atoi(arg2);
+	else
+		right = left;
+
+	if (!arg1 || right >= llist_size(s->bc->chain))
+		right = llist_size(s->bc->chain) - 1;
+
+	printf("\n[Blockchain]");
+	for (i = left; i <= right; i++)
+	{
+		block = llist_get_node_at(s->bc->chain, i);
+		printf("\n[Block %d] ", block->info.index);
+		_print_hex_buffer(block->hash, SHA256_DIGEST_LENGTH);
+		printf("\n");
+		if (i == 0)
+			continue;
+		for (j = 0; j < llist_size(block->transactions); j++)
+		{
+			t_token = llist_get_node_at(block->transactions, j);
+			print_transaction(s, t_token);
+		}
+	}
+	printf("\n");
+	return (1);
+}
+
+/**
 * bi_info - prints info about the current state of the CLI
 * @s: state manager
 * @arg1: debug mode
@@ -127,11 +173,13 @@ int bi_help(state_manager_t *s, char *arg1, char *arg2)
 	(void)arg2;
 
 	printf("Commands:\n");
-	printf("\thelp (displays this message)\n");
+	printf("\thelp\n");
+	printf("\tmine\n");
+	printf("\tsend <amount> <address>\n");
+	printf("\tprint <start> <end>\n");
+	printf("\nDebug Commands (Use at own risk):\n");
 	printf("\twallet_load <path>\n");
 	printf("\twallet_save <path>\n");
-	printf("\tsend <amount> <address>\n");
-	printf("\tmine\n");
 	printf("\tinfo\n");
 	printf("\tload <path>\n");
 	printf("\tsave <path>\n\n");

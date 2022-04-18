@@ -2,13 +2,18 @@
 
 /**
 * display_welcome - prints a welcome message
+* @name: name of user
 */
-void display_welcome(void)
+void display_welcome(char *name)
 {
-	printf("==================================\n\n");
-	printf("   Welcome to Blockchain CLI!\n");
-	printf("   A new blockchain and wallet\n");
-	printf("   have been generated for you.\n\n");
+	int padlen;
+
+	padlen = (34 - strlen(name)) / 2;
+
+	printf("==================================\n");
+	printf("          Logged in as:\n");
+	printf("%*s%s\n", padlen, "", name);
+	printf("    Welcome to Blockchain CLI!\n");
 	printf("==================================\n");
 	bi_help(NULL, NULL, NULL);
 }
