@@ -27,7 +27,7 @@ typedef struct user_s
 /**
 * struct state_manager_s - manages the state of the program
 * @bc: reference to blockchain
-* @block: reference to active block being built
+* @pending: transaction list of active block being built
 * @user: current user
 * @utxo: copy of blockchain's unspent list to remove from on SEND
 * @all_users: list of all users
@@ -35,7 +35,7 @@ typedef struct user_s
 typedef struct state_manager_s
 {
 	blockchain_t *bc;
-	block_t *block;
+	llist_t *pending;
 	user_t *user;
 	llist_t *utxo;
 	llist_t *all_users;
@@ -77,6 +77,7 @@ int user_name_exists(llist_t *users, char *name);
 int bi_help(state_manager_t *, char *, char *);
 int bi_send(state_manager_t *, char *, char *);
 int bi_mine(state_manager_t *, char *, char *);
+int bi_bcprint(state_manager_t *, char *, char *);
 
 /* Debug Functions */
 int bi_wallet_load(state_manager_t *, char *, char *);

@@ -17,13 +17,14 @@ int (*gumball(char *cmd))(state_manager_t *, char *, char *)
 		{"mine", &bi_mine},
 		{"info", &bi_info},
 		{"load", &bi_load},
-		{"save", &bi_save}
+		{"save", &bi_save},
+		{"bcprint", &bi_bcprint}
 	};
 
 	if (cmd == NULL)
 		return (NULL);
 
-	for (i = 0; i < 8; i++)
+	for (i = 0; i < 9; i++)
 	{
 		if (!strcmp(pot[i].cmd, cmd))
 			return (pot[i].f);

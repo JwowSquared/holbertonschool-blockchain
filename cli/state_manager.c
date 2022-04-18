@@ -14,8 +14,7 @@ state_manager_t *create_state_manager(void)
 		return (NULL);
 
 	out->bc = blockchain_create();
-	out->block = llist_get_head(out->bc->chain);
-	out->block = block_create(out->block, (int8_t *)"Minecraft", 9);
+	out->pending = llist_create(MT_SUPPORT_FALSE);
 	out->utxo = llist_create(MT_SUPPORT_FALSE);
 	out->user = NULL;
 	out->all_users = load_users();
@@ -50,8 +49,8 @@ void destroy_state_manager(state_manager_t *s)
 	if (s == NULL)
 		return;
 
-	block_destroy(s->block);
-	blockchain_destroy(s->bc);
+	blockchain_destroy(s->bc);	
+	llist_destroy(s->pending, 1, (node_dtor_t)transaction_destroy);
 	llist_destroy(s->utxo, 0, NULL);
 	llist_destroy(s->all_users, 1, destroy_user);
 	free(s);

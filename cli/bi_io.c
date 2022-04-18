@@ -30,6 +30,8 @@ int bi_load(state_manager_t *s, char *arg1, char *arg2)
 	blockchain_destroy(s->bc);
 	s->bc = out;
 	dupe_unspent(s);
+	llist_destroy(s->pending, 1, (node_dtor_t)transaction_destroy);
+	s->pending = llist_create(MT_SUPPORT_FALSE);
 
 	printf("Successfully loaded blockchain\n");
 

@@ -11,26 +11,29 @@
 int bi_mine(state_manager_t *s, char *arg1, char *arg2)
 {
 	transaction_t *t_token;
+	block_t *block;
 
 	(void)arg1;
 	(void)arg2;
 
-	t_token = coinbase_create(s->user->key, s->block->info.index);
-	llist_add_node(s->block->transactions, t_token, ADD_NODE_FRONT);
+	block = llist_get_tail(s->bc->chain);
+	block = block_create(block, (int8_t *)"Minecraft", 9);
+	llist_append(block->transactions, s->pending);
 
-	s->block->info.difficulty = blockchain_difficulty(s->bc);
-	block_mine(s->block);
-	llist_add_node(s->bc->chain, s->block, ADD_NODE_REAR);
+	t_token = coinbase_create(s->user->key, block->info.index);
+	llist_add_node(block->transactions, t_token, ADD_NODE_FRONT);
 
-	s->bc->unspent = update_unspent(s->block->transactions,
-		s->block->hash, s->bc->unspent);
+	block->info.difficulty = blockchain_difficulty(s->bc);
+	block_mine(block);
+	llist_add_node(s->bc->chain, block, ADD_NODE_REAR);
+
+	s->bc->unspent = update_unspent(block->transactions,
+		block->hash, s->bc->unspent);
 	dupe_unspent(s);
 
-	printf("Block mined: [%u] ", s->block->info.difficulty);
-	_print_hex_buffer(s->block->hash, SHA256_DIGEST_LENGTH);
+	printf("Block mined: [%u] ", block->info.difficulty);
+	_print_hex_buffer(block->hash, SHA256_DIGEST_LENGTH);
 	printf("\n");
-
-	s->block = block_create(s->block, (int8_t *)"Minecraft", 9);
 
 	return (1);
 }
@@ -77,7 +80,7 @@ int bi_send(state_manager_t *s, char *arg1, char *arg2)
 	for (i = 0; i < llist_size(t_token->inputs); i++)
 		llist_remove_node(s->utxo, remove_spent, t_token->inputs, 0, NULL);
 
-	llist_add_node(s->block->transactions, t_token, ADD_NODE_REAR);
+	llist_add_node(s->pending, t_token, ADD_NODE_REAR);
 	printf("Transaction Added to Pending List\n");
 
 	return (1);
@@ -93,17 +96,15 @@ int bi_send(state_manager_t *s, char *arg1, char *arg2)
 */
 int bi_info(state_manager_t *s, char *arg1, char *arg2)
 {
-	uint8_t pub[EC_PUB_LEN];
-
 	(void)arg2;
 
 	printf("=====================================\n");
 	printf("num Blocks: %d\n", llist_size(s->bc->chain));
 	printf("num Unspent: %d\n", llist_size(s->utxo));
-	printf("num Pending Transactions: %d\n", llist_size(s->block->transactions));
+	printf("num Pending Transactions: %d\n", llist_size(s->pending));
 	printf("Your Address: ");
 	_print_hex_buffer(s->user->pub, EC_PUB_LEN);
-	printf("\nBalance: %u\n", check_balance(s->utxo, pub));
+	printf("\nBalance: %u\n", check_balance(s->utxo, s->user->pub));
 	printf("=====================================\n");
 	if (arg1 != NULL)
 		_blockchain_print(s->bc);
