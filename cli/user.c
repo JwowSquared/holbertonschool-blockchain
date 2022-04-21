@@ -68,6 +68,7 @@ llist_t *load_users(void)
 		fread(user->pass, SHA256_DIGEST_LENGTH, 1, file);
 		llist_add_node(out, user, ADD_NODE_REAR);
 	}
+	fclose(file);
 
 	path = malloc(25);
 	for (i = 0; i < u_size; i++)

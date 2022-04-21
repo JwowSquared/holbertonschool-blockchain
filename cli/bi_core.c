@@ -82,8 +82,8 @@ int bi_send(state_manager_t *s, char *arg1, char *arg2)
 		llist_remove_node(s->utxo, remove_spent, t_token->inputs, 1, NULL);
 
 	llist_add_node(s->pending, t_token, ADD_NODE_REAR);
-	printf("Transaction Added to Pending List\n");
-	bi_pending(s, NULL, NULL);
+	printf("[Added Transaction]\n");
+	print_transaction(s, t_token);
 
 	return (1);
 }

@@ -144,3 +144,13 @@ user_t *login(llist_t *users, char *name, char *pass)
 
 	return (NULL);
 }
+
+/**
+* safe_free - makes sure free doesnt get passed NULL
+* @s: string to free
+*/
+void safe_free(char *s)
+{
+	if (s)
+		free(s);
+}

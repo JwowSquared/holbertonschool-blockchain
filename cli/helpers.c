@@ -80,15 +80,6 @@ int convert_key(char *key, uint8_t pub[EC_PUB_LEN])
 	return (1);
 }
 
-/**
-* safe_free - makes sure free doesnt get passed NULL
-* @s: string to free
-*/
-void safe_free(char *s)
-{
-	if (s)
-		free(s);
-}
 
 /**
 * e_print - prints errors

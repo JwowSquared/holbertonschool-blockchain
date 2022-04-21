@@ -72,6 +72,7 @@ void prompt_startup(state_manager_t *s);
 void prompt_login(state_manager_t *s);
 void prompt_newuser(state_manager_t *s);
 user_t *login(llist_t *, char *, char *);
+void safe_free(char *s);
 
 /* Builtin Core Functions */
 int bi_send(state_manager_t *, char *, char *);
@@ -102,8 +103,8 @@ int find_out(llist_node_t node, void *data);
 /* Helper Functions */
 void display_welcome(char *);
 uint32_t check_balance(llist_t *all_unspent, uint8_t key_in[EC_PUB_LEN]);
+uint32_t pending_balance(llist_t *pending, uint8_t pub[EC_PUB_LEN]);
 int convert_key(char *key, uint8_t pub[EC_PUB_LEN]);
-void safe_free(char *s);
 int e_print(int, char *);
 
 /* Provided Functions */
