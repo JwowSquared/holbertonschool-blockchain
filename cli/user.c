@@ -129,3 +129,24 @@ int save_users(llist_t *users)
 	fclose(file);
 	return (0);
 }
+
+/**
+* find_user - determines if a username exists
+* @users: list of all users
+* @name: username to check for
+*
+* Return: user object if match, else NULL
+*/
+user_t *find_user(llist_t *users, char *name)
+{
+	int i;
+	user_t *user;
+
+	for (i = 0; i < llist_size(users); i++)
+	{
+		user = llist_get_node_at(users, i);
+		if (!strcmp(user->name, name))
+			return (user);
+	}
+	return (NULL);
+}

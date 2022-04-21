@@ -1,6 +1,32 @@
 #include "cli.h"
 
 /**
+* bi_info - prints info about the current state of the CLI
+* @s: state manager
+* @arg1: unused
+* @arg2: unused
+*
+* Return: 1 on success, else 0
+*/
+int bi_info(state_manager_t *s, char *arg1, char *arg2)
+{
+	(void)arg1;
+	(void)arg2;
+
+	printf("=====================================\n");
+	printf("num Blocks: %d\n", llist_size(s->bc->chain));
+	printf("num Unspent: %d\n", llist_size(s->utxo));
+	printf("num Pending Transactions: %d\n", llist_size(s->pending));
+	printf("Your Address: ");
+	_print_hex_buffer(s->user->pub, EC_PUB_LEN);
+	printf("\nBalance: %u\n", check_balance(s->utxo, s->user->pub));
+	printf("=====================================\n");
+	_blockchain_print(s->bc);
+
+	return (1);
+}
+
+/**
 * bi_load - loads a blockchain from file, replacing the current one
 * @s: state manager
 * @arg1: path to load blockchain from

@@ -89,3 +89,16 @@ void safe_free(char *s)
 	if (s)
 		free(s);
 }
+
+/**
+* e_print - prints errors
+* @code: return value
+* @prompt: error to print
+*
+* Return: code
+*/
+int e_print(int code, char *prompt)
+{
+	printf("%s", prompt);
+	return (code);
+}

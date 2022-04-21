@@ -6,10 +6,10 @@ state_manager.c \
 user.c \
 login.c \
 gumball.c \
-bi.c \
-bi_io.c \
+bi_core.c \
+bi_display.c \
+bi_debug.c \
 print_helpers.c \
-e_print.c \
 helpers.c \
 provided/*.c
 

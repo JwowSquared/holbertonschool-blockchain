@@ -27,6 +27,8 @@ void prompt_startup(state_manager_t *s)
 		printf("\n");
 	}
 	safe_free(line);
+	if (s->user != NULL)
+		display_welcome(s->user->name);
 }
 
 /**
@@ -46,7 +48,7 @@ void prompt_login(state_manager_t *s)
 		name = strtok(line, "\n");
 		if (name == NULL)
 			continue;
-		if (!user_name_exists(s->all_users, name))
+		if (!find_user(s->all_users, name))
 		{
 			printf("Username Unrecognized.\n");
 			continue;
@@ -90,7 +92,7 @@ void prompt_newuser(state_manager_t *s)
 			printf("Username must be 12 characters or less.\n");
 			continue;
 		}
-		if (user_name_exists(s->all_users, name))
+		if (find_user(s->all_users, name))
 		{
 			printf("Account already associated with that username.\n");
 			continue;
@@ -141,25 +143,4 @@ user_t *login(llist_t *users, char *name, char *pass)
 	}
 
 	return (NULL);
-}
-
-/**
-* user_name_exists - determines if a username exists
-* @users: list of all users
-* @name: username to check for
-*
-* Return: 1 if username exists, else 0
-*/
-int user_name_exists(llist_t *users, char *name)
-{
-	int i;
-	user_t *user;
-
-	for (i = 0; i < llist_size(users); i++)
-	{
-		user = llist_get_node_at(users, i);
-		if (!strcmp(user->name, name))
-			return (1);
-	}
-	return (0);
 }

@@ -13,16 +13,9 @@ int main(void)
 	int (*func)(state_manager_t *, char *, char *);
 
 	s = create_state_manager();
-
 	prompt_startup(s);
 	if (s->user == NULL)
-	{
-		destroy_state_manager(s);
-		if (line)
-			free(line);
-		return (0);
-	}
-	display_welcome(s->user->name);
+		return (destroy_state_manager(s));
 
 	while (1)
 	{
@@ -35,7 +28,10 @@ int main(void)
 		arg2 = strtok(NULL, " ");
 		func = gumball(cmd);
 		if (func)
-			func(s, arg1, arg2);
+		{
+			if (!func(s, arg1, arg2))
+				break;
+		}
 		else
 			printf("unrecognized command\n");
 	}
