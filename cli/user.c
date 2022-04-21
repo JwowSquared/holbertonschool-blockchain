@@ -55,7 +55,7 @@ llist_t *load_users(void)
 
 	out = llist_create(MT_SUPPORT_FALSE);
 
-	file = fopen("users/user.dat", "rb");
+	file = fopen("data/user.dat", "rb");
 	if (!file)
 		return (out);
 
@@ -69,12 +69,12 @@ llist_t *load_users(void)
 		llist_add_node(out, user, ADD_NODE_REAR);
 	}
 
-	path = malloc(20);
+	path = malloc(25);
 	for (i = 0; i < u_size; i++)
 	{
 		user = llist_get_node_at(out, i);
-		memset(path, 0, 20);
-		sprintf(path, "%s%s", "users/", user->name);
+		memset(path, 0, 25);
+		sprintf(path, "%s%s", "data/users/", user->name);
 		user->key = ec_load(path);
 		ec_to_pub(user->key, user->pub);
 	}
@@ -97,21 +97,23 @@ int save_users(llist_t *users)
 	uint32_t i, u_size;
 	char *path;
 
-	if (stat("users", &st) == -1)
-		mkdir("users", 0700);
+	if (stat("data", &st) == -1)
+		mkdir("data", 0700);
+	if (stat("data/users", &st) == -1)
+		mkdir("data/users", 0700);
 
 	u_size = llist_size(users);
 
-	path = malloc(20);
+	path = malloc(25);
 	for (i = 0; i < u_size; i++)
 	{
 		user = llist_get_node_at(users, i);
-		memset(path, 0, 20);
-		sprintf(path, "%s%s", "users/", (char *)user->name);
+		memset(path, 0, 25);
+		sprintf(path, "%s%s", "data/users/", (char *)user->name);
 		ec_save(user->key, path);
 	}
 
-	file = fopen("users/user.dat", "wb");
+	file = fopen("data/user.dat", "wb");
 	if (!file)
 		return (-1);
 

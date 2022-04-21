@@ -22,7 +22,6 @@ int main(void)
 			free(line);
 		return (0);
 	}
-
 	display_welcome(s->user->name);
 
 	while (1)
@@ -42,6 +41,7 @@ int main(void)
 	}
 
 	save_users(s->all_users);
+	blockchain_serialize(s->bc, "data/chain.dat");
 	destroy_state_manager(s);
 	if (line)
 		free(line);

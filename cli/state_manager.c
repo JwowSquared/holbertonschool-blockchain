@@ -13,7 +13,9 @@ state_manager_t *create_state_manager(void)
 	if (out == NULL)
 		return (NULL);
 
-	out->bc = blockchain_create();
+	out->bc = blockchain_deserialize("data/chain.dat");
+	if (out->bc == NULL)
+		out->bc = blockchain_create();
 	out->pending = llist_create(MT_SUPPORT_FALSE);
 	out->utxo = llist_create(MT_SUPPORT_FALSE);
 	out->user = NULL;
