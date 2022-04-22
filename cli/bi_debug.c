@@ -42,15 +42,15 @@ int bi_load(state_manager_t *s, char *arg1, char *arg2)
 
 	if (arg1 == NULL)
 	{
-		printf("Usage: load <path>\n");
-		return (0);
+		return (e_print(1, "Usage: load <path>\n"));
+		return (1);
 	}
 
 	out = blockchain_deserialize(arg1);
 	if (out == NULL)
 	{
 		printf("Error loading blockchain from %s\n", arg1);
-		return (0);
+		return (1);
 	}
 
 	blockchain_destroy(s->bc);
@@ -79,13 +79,13 @@ int bi_save(state_manager_t *s, char *arg1, char *arg2)
 	if (arg1 == NULL)
 	{
 		printf("Usage: save <path>\n");
-		return (0);
+		return (1);
 	}
 
 	if (blockchain_serialize(s->bc, arg1) == -1)
 	{
 		printf("Error saving blockchain to %s\n", arg1);
-		return (0);
+		return (1);
 	}
 
 	printf("Successfully saved blockchain\n");
@@ -110,14 +110,14 @@ int bi_wallet_load(state_manager_t *s, char *arg1, char *arg2)
 	if (arg1 == NULL)
 	{
 		printf("Usage: wallet_load <path>\n");
-		return (0);
+		return (1);
 	}
 
 	out = ec_load(arg1);
 	if (out == NULL)
 	{
 		printf("Error loading wallet from %s\n", arg1);
-		return (0);
+		return (1);
 	}
 
 	EC_KEY_free(s->user->key);
@@ -142,13 +142,13 @@ int bi_wallet_save(state_manager_t *s, char *arg1, char *arg2)
 	if (arg1 == NULL)
 	{
 		printf("Usage: wallet_save <path>\n");
-		return (0);
+		return (1);
 	}
 
 	if (ec_save(s->user->key, arg1) == -1)
 	{
 		printf("Error saving key to %s\n", arg1);
-		return (0);
+		return (1);
 	}
 
 	printf("Successfully saved wallet\n");
