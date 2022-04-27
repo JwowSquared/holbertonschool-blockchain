@@ -136,4 +136,4 @@ files-15r = test/blockchain_deserialize-main.c *.c transaction/*.c provided/*.c
 task15-read: $(files-15r)
 	$(compiler) -o task15-read $(files-15r) $(flags)
 clean:
-	rm task* $(lib-files)
+	rm task* $(lib-files) libhblk_blockchain.a
