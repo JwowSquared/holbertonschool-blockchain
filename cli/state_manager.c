@@ -32,15 +32,17 @@ state_manager_t *create_state_manager(void)
 void dupe_unspent(state_manager_t *s)
 {
 	int i;
-	unspent_tx_out_t *u_token;
+	unspent_tx_out_t *u_token, *temp;
 
 	if (s->utxo != NULL)
-		llist_destroy(s->utxo, 0, NULL);
+		llist_destroy(s->utxo, 1, NULL);
 	s->utxo = llist_create(MT_SUPPORT_FALSE);
 	for (i = 0; i < llist_size(s->bc->unspent); i++)
 	{
 		u_token = llist_get_node_at(s->bc->unspent, i);
-		llist_add_node(s->utxo, u_token, ADD_NODE_REAR);
+		temp = malloc(sizeof(unspent_tx_out_t));
+		memcpy(temp, u_token, 165);
+		llist_add_node(s->utxo, temp, ADD_NODE_REAR);
 	}
 }
 
@@ -57,7 +59,7 @@ int destroy_state_manager(state_manager_t *s)
 
 	blockchain_destroy(s->bc);
 	llist_destroy(s->pending, 1, (node_dtor_t)transaction_destroy);
-	llist_destroy(s->utxo, 0, NULL);
+	llist_destroy(s->utxo, 1, NULL);
 	llist_destroy(s->all_users, 1, destroy_user);
 	free(s);
 
